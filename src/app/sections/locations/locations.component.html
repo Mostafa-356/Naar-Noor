@@ -1,32 +1,28 @@
-<section id="locations" class="py-6 px-6">
-  <div class="max-w-7xl mx-auto bg-[#111] border border-white/5 rounded-2xl overflow-hidden flex flex-col lg:flex-row">
-    <div class="w-full lg:w-1/2 min-h-[400px] lg:min-h-[500px] relative bg-[#1a1a1a]">
-      <!-- Google Maps Embed with Dark Style -->
-      <iframe 
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2598.5!2d-2.5369!3d49.4597!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x480c5e8c8c8c8c8d%3A0x8c8c8c8c8c8c8c8c!2sSt%20Peter%20Port%2C%20Guernsey!5e0!3m2!1sen!2suk!4v1234567890&style=feature:all|element:geometry|color:0x242f3e&style=feature:all|element:labels.text.stroke|color:0x242f3e&style=feature:all|element:labels.text.fill|color:0x746855&style=feature:water|element:geometry|color:0x17263c"
-        width="100%" 
-        height="100%" 
-        style="border:0; filter: grayscale(100%) invert(92%) contrast(83%);" 
-        allowfullscreen="" 
-        loading="lazy" 
-        referrerpolicy="no-referrer-when-downgrade"
-        class="absolute inset-0 w-full h-full">
-      </iframe>
-      <!-- Orange location marker overlay -->
-      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
-        <iconify-icon icon="solar:map-point-bold" width="48" class="text-[#C65A1E] drop-shadow-[0_0_20px_rgba(198,90,30,0.8)]"></iconify-icon>
+<section id="locations" class="py-24 px-6">
+  <div class="max-w-5xl mx-auto bg-[#0f0f0f] border border-white/5 rounded-xl overflow-hidden flex flex-col md:flex-row shadow-2xl">
+    <!-- Map Image with Overlay -->
+    <div class="w-full md:w-1/2 min-h-[300px] relative bg-[#0a0a0a]">
+      <img 
+        src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=2074&auto=format&fit=crop" 
+        alt="Map Location"
+        class="absolute inset-0 w-full h-full object-cover opacity-20 grayscale mix-blend-luminosity">
+      <div class="absolute inset-0 bg-gradient-to-r from-transparent to-[#0f0f0f]"></div>
+      <!-- Orange location marker -->
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[#C65A1E] flex flex-col items-center drop-shadow-[0_0_15px_rgba(198,90,30,0.5)]">
+        <iconify-icon icon="solar:map-point-bold" width="32"></iconify-icon>
       </div>
     </div>
 
-    <div class="w-full lg:w-1/2 p-12 md:p-16 flex flex-col justify-center bg-[#0f0f0f]">
-      <h2 class="font-['Forum'] text-3xl md:text-4xl text-white tracking-tight mb-12 drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">Visit Us</h2>
+    <!-- Information Panel -->
+    <div class="w-full md:w-1/2 p-10 md:p-12 flex flex-col justify-center">
+      <h2 class="font-['Forum'] text-3xl text-white tracking-tighter mb-8">Visit Us</h2>
       
-      <div class="space-y-10">
+      <div class="space-y-6">
         <div>
-          <h4 class="text-xs text-neutral-500 uppercase tracking-wider font-medium mb-4 flex items-center gap-2">
-            <iconify-icon icon="solar:map-point-linear" width="16"></iconify-icon> ADDRESS
+          <h4 class="text-[10px] text-neutral-500 uppercase tracking-wider font-medium mb-2 flex items-center gap-1.5">
+            <iconify-icon icon="solar:map-point-linear" width="14"></iconify-icon> Address
           </h4>
-          <p class="text-base text-neutral-200 font-light leading-relaxed">
+          <p class="text-sm text-neutral-300 font-light leading-relaxed">
             Town Centre,<br/>
             St Peter Port,<br/>
             Guernsey, GY1 2PN
@@ -36,20 +32,14 @@
         <div class="h-px w-full bg-white/5"></div>
 
         <div>
-          <h4 class="text-xs text-neutral-500 uppercase tracking-wider font-medium mb-4 flex items-center gap-2">
-            <iconify-icon icon="solar:clock-circle-linear" width="16"></iconify-icon> HOURS
+          <h4 class="text-[10px] text-neutral-500 uppercase tracking-wider font-medium mb-2 flex items-center gap-1.5">
+            <iconify-icon icon="solar:clock-circle-linear" width="14"></iconify-icon> Hours
           </h4>
-          <div class="space-y-2 text-sm text-neutral-200 font-light">
-            <div class="flex justify-between items-center">
-              <span class="text-neutral-400">Lunch:</span>
-              <span>12:00 PM – 2:00 PM</span>
-            </div>
-            <div class="flex justify-between items-center">
-              <span class="text-neutral-400">Dinner:</span>
-              <span>6:00 PM – 9:00 PM</span>
-            </div>
+          <div class="grid grid-cols-2 gap-2 max-w-xs text-xs text-neutral-300 font-light">
+            <span class="text-neutral-500">Lunch:</span> <span>12:00 PM – 2:00 PM</span>
+            <span class="text-neutral-500">Dinner:</span> <span>6:00 PM – 9:00 PM</span>
           </div>
-          <p class="text-xs text-[#C65A1E] mt-4 font-medium">Closed on Mondays</p>
+          <p class="text-[10px] text-[#C65A1E] mt-3 font-medium">Closed on Mondays</p>
         </div>
       </div>
     </div>
