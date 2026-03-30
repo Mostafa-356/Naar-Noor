@@ -37,7 +37,7 @@ jobs:
           cache: 'npm'
       
       - name: Install dependencies
-        run: npm ci --legacy-peer-deps
+        run: npm install --legacy-peer-deps --prefer-offline
       
       - name: Generate file tree
         id: file-tree
@@ -135,7 +135,7 @@ jobs:
           cache: 'npm'
       
       - name: Install dependencies
-        run: npm ci --legacy-peer-deps
+        run: npm install --legacy-peer-deps --prefer-offline
       
       - name: Generate dependency list
         run: |
@@ -219,7 +219,7 @@ jobs:
           cache: 'npm'
       
       - name: Install dependencies
-        run: npm ci --legacy-peer-deps
+        run: npm install --legacy-peer-deps --prefer-offline
       
       - name: Install Compodoc
         run: npm install -g @compodoc/compodoc

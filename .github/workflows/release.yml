@@ -33,7 +33,7 @@ jobs:
           cache: 'npm'
       
       - name: Install dependencies
-        run: npm ci --legacy-peer-deps
+        run: npm install --legacy-peer-deps --prefer-offline
       
       - name: Build for production
         run: npm run build:prod
@@ -202,7 +202,7 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       
       - name: Install dependencies
-        run: npm ci --legacy-peer-deps
+        run: npm install --legacy-peer-deps --prefer-offline
       
       - name: Publish to npm
         run: npm publish
