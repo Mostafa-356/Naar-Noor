@@ -1,0 +1,28 @@
+<section id="chefs" class="py-6 px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+      <div>
+        <span class="text-[#C65A1E] text-xs font-medium tracking-[0.2em] uppercase mb-2 block">The Masters</span>
+        <h2 class="font-['Forum'] text-4xl md:text-5xl text-white tracking-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">Meet Our Chefs</h2>
+      </div>
+      <p class="text-sm text-neutral-100 max-w-md font-light leading-relaxed">
+        Bringing decades of experience from the high-altitude kitchens of Nepal to the modern culinary scene.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+      <div *ngFor="let chef of chefs; let i = index" class="group" [class.md:mt-16]="i === 1">
+        <div class="aspect-[3/4] rounded-2xl overflow-hidden mb-6 bg-[#111]">
+          <img 
+            [src]="chef.image" 
+            [alt]="chef.name"
+            loading="lazy"
+            class="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500">
+        </div>
+        <h3 class="font-['Forum'] text-2xl text-white tracking-tight mb-1">{{ chef.name }}</h3>
+        <span class="text-xs text-[#C65A1E] uppercase tracking-wider font-medium block mb-3">{{ chef.role }}</span>
+        <p class="text-sm text-neutral-200 font-light leading-relaxed">{{ chef.bio }}</p>
+      </div>
+    </div>
+  </div>
+</section>

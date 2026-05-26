@@ -19,7 +19,7 @@ run = "pnpm --filter @workspace/naar-noor run dev"
 
 [services.production]
 build = [ "pnpm", "--filter", "@workspace/naar-noor", "run", "build" ]
-publicDir = "artifacts/naar-noor/dist/public"
+publicDir = "artifacts/naar-noor/dist/lost-yeti/browser"
 serve = "static"
 
 [[services.production.rewrites]]
@@ -28,4 +28,3 @@ to = "/index.html"
 
 [services.env]
 PORT = "24790"
-BASE_PATH = "/"

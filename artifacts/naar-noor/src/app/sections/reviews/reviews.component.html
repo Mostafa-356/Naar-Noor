@@ -1,0 +1,23 @@
+<section class="py-6 bg-[#0d0d0d] px-6 border-y border-white/5">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div *ngFor="let review of reviews" class="p-8 rounded-2xl bg-[#111] border border-white/5 relative">
+        <iconify-icon icon="solar:quote-right-bold-duotone" width="48" class="absolute top-6 right-6 text-white/5"></iconify-icon>
+        
+        <div class="flex items-center gap-1 mb-6 text-[#C65A1E]">
+          <iconify-icon icon="solar:star-bold" width="16"></iconify-icon>
+          <iconify-icon icon="solar:star-bold" width="16"></iconify-icon>
+          <iconify-icon icon="solar:star-bold" width="16"></iconify-icon>
+          <iconify-icon icon="solar:star-bold" width="16"></iconify-icon>
+          <iconify-icon icon="solar:star-bold" width="16"></iconify-icon>
+        </div>
+        
+        <p class="text-sm text-neutral-100 font-light italic leading-relaxed mb-6">
+          "{{ review.text }}"
+        </p>
+        
+        <span class="text-xs text-neutral-300 uppercase tracking-wider font-medium">{{ review.author }}</span>
+      </div>
+    </div>
+  </div>
+</section>

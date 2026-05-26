@@ -1,0 +1,100 @@
+.spline-container {
+  pointer-events: none;
+  z-index: -50;
+  overflow: hidden;
+}
+
+.spline-container iframe {
+  border: none;
+  pointer-events: none;
+}
+
+:host {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -50;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Gradient animations - re-introducing subtle scale/rotate for visibility */
+@keyframes gradient {
+  0%, 100% {
+    opacity: 1;
+    transform: translate3d(0,0,0) scale(1) rotate(0deg);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translate3d(2%, 2%, 0) scale(1.05) rotate(2deg);
+  }
+}
+
+@keyframes gradient-slow {
+  0%, 100% {
+    opacity: 0.8;
+    transform: translate3d(0,0,0) scale(1) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: translate3d(-2%, -2%, 0) scale(1.08) rotate(-2deg);
+  }
+}
+
+/* Floating orb animations - re-introducing scale */
+@keyframes float {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(20px, -20px, 0) scale(1.1);
+  }
+}
+
+@keyframes float-delayed {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-30px, 20px, 0) scale(0.9);
+  }
+}
+
+@keyframes float-slow {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(15px, 20px, 0) scale(1.05);
+  }
+}
+
+.animate-gradient {
+  animation: gradient 15s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+.animate-gradient-slow {
+  animation: gradient-slow 20s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+.animate-float {
+  animation: float 20s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-float-delayed {
+  animation: float-delayed 25s ease-in-out infinite;
+  animation-delay: 2s;
+  will-change: transform;
+}
+
+.animate-float-slow {
+  animation: float-slow 30s ease-in-out infinite;
+  animation-delay: 5s;
+  will-change: transform;
+}

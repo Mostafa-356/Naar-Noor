@@ -1,0 +1,27 @@
+<section id="menu" class="py-6 px-6 bg-[#0d0d0d]">
+  <div class="max-w-4xl mx-auto">
+    <div class="text-center mb-16">
+      <span class="text-[#C65A1E] text-xs font-medium tracking-[0.2em] uppercase mb-2 block">Signatures</span>
+      <h2 class="font-['Forum'] text-4xl md:text-5xl text-white tracking-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">Crafted With Passion</h2>
+    </div>
+
+    <div class="space-y-10">
+      <div *ngFor="let item of menuItems" class="group">
+        <div class="flex items-baseline justify-between mb-2">
+          <h3 class="font-['Forum'] text-xl md:text-2xl text-white tracking-tight group-hover:text-[#C65A1E] transition-colors">
+            {{ item.name }}
+          </h3>
+          <div class="flex-grow border-b border-white/10 border-dotted mx-4 relative top-[-6px]"></div>
+          <span class="font-['Forum'] text-xl text-white">{{ item.price }}</span>
+        </div>
+        <p class="text-sm text-neutral-200 font-light pr-12">{{ item.description }}</p>
+      </div>
+    </div>
+
+    <div class="mt-16 text-center">
+      <a href="#" class="inline-flex items-center justify-center px-8 py-3.5 text-sm font-medium text-white border border-white/20 rounded-xl hover:bg-white hover:text-[#0a0a0a] transition-all duration-300">
+        View Full Menu
+      </a>
+    </div>
+  </div>
+</section>
