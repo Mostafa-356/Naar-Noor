@@ -1,0 +1,1 @@
+- [Replit PostgreSQL + Npgsql DNS fix](replit-postgres-npgsql.md) — .NET Npgsql resolves Replit's 'helium' DB host to 127.0.0.1; must resolve to IP first and use SSL Mode=Disable.
