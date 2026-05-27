@@ -1,18 +1,22 @@
-<section class="py-6 px-6">
+<section class="py-12 sm:py-16 md:py-20 px-4 sm:px-6">
   <div class="max-w-7xl mx-auto">
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-      <a 
-        *ngFor="let category of categories" 
-        href="#menu" 
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
+      <a
+        *ngFor="let category of categories; let i = index"
+        href="#menu"
+        reveal
+        [revealDelay]="i * 80"
+        revealFrom="scale"
         class="group relative aspect-square rounded-2xl overflow-hidden block">
-        <img 
-          [src]="category.image" 
+        <img
+          [src]="category.image"
           [alt]="category.title"
           loading="lazy"
-          class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-60">
-        <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/40 to-transparent"></div>
-        <div class="absolute inset-0 p-6 flex flex-col justify-end">
-          <h3 class="font-['Forum'] text-xl md:text-2xl text-white tracking-tight">{{ category.title }}</h3>
+          class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-60 group-hover:opacity-80">
+        <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/90 via-[#0a0a0a]/30 to-transparent"></div>
+        <div class="absolute inset-0 p-4 sm:p-5 md:p-6 flex flex-col justify-end">
+          <h3 class="font-['Forum'] text-base sm:text-lg md:text-2xl text-white tracking-tight leading-tight">{{ category.title }}</h3>
+          <span class="text-[10px] sm:text-xs text-[#C65A1E] uppercase tracking-widest mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">Explore</span>
         </div>
       </a>
     </div>

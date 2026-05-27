@@ -1,15 +1,17 @@
-<section id="about" class="pt-48 md:pt-56 pb-6 px-6">
-  <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 items-center">
-    <div class="w-full lg:w-1/2 relative">
+<section id="about" class="pt-16 md:pt-[260px] pb-16 sm:pb-20 md:pb-24 px-4 sm:px-6">
+  <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12 lg:gap-16 items-center">
+
+    <!-- Image -->
+    <div reveal [revealDelay]="0" revealFrom="left" class="w-full lg:w-1/2 relative">
       <div class="aspect-[4/5] rounded-2xl overflow-hidden">
-        <img 
-          src="assets/locations/cooking-fire.jpg" 
-          alt="Cooking over fire" 
+        <img
+          src="assets/locations/cooking-fire.jpg"
+          alt="Cooking over fire"
           loading="lazy"
           class="w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity duration-700">
       </div>
-      <div class="absolute -bottom-8 -right-8 w-48 h-48 bg-[#111] rounded-full border border-white/5 flex items-center justify-center p-6 hidden md:flex">
-        <p class="font-['Forum'] text-center text-sm text-white tracking-tight uppercase">
+      <div class="absolute -bottom-6 -right-6 sm:-bottom-8 sm:-right-8 w-36 h-36 sm:w-48 sm:h-48 bg-[#111] rounded-full border border-white/5 items-center justify-center p-4 sm:p-6 hidden md:flex">
+        <p class="font-['Forum'] text-center text-xs sm:text-sm text-white tracking-tight uppercase">
           Crafted<br/>
           <span class="text-[#C65A1E]">With Passion</span><br/>
           Since 2026
@@ -17,29 +19,31 @@
       </div>
     </div>
 
-    <div class="w-full lg:w-1/2 space-y-8">
+    <!-- Text content -->
+    <div reveal [revealDelay]="120" revealFrom="right" class="w-full lg:w-1/2 space-y-6 sm:space-y-8">
       <div>
-        <span class="text-[#C65A1E] text-xs font-medium tracking-[0.2em] uppercase mb-2 block">Our Story</span>
-        <h2 class="font-['Forum'] text-4xl md:text-5xl text-white tracking-tight leading-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
-          Naar & Noor <br/> Experience
+        <span class="text-[#C65A1E] text-xs font-medium tracking-[0.2em] uppercase mb-3 block">Our Story</span>
+        <h2 class="font-['Forum'] text-3xl sm:text-4xl md:text-5xl text-white tracking-tight leading-tight">
+          Naar &amp; Noor<br/>Experience
         </h2>
       </div>
-      <p class="text-base text-neutral-100 leading-relaxed font-light">
-        At Naar & Noor, we bring the soul of the Himalayas to your plate. Our culinary philosophy 
-        is rooted in ancient traditions, where fire, spice, and time-honored techniques transform simple ingredients 
+      <p class="text-sm sm:text-base text-neutral-300 leading-relaxed font-light">
+        At Naar &amp; Noor, we bring the soul of the Himalayas to your plate. Our culinary philosophy
+        is rooted in ancient traditions, where fire, spice, and time-honored techniques transform simple ingredients
         into extraordinary feasts.
       </p>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 pt-2">
         <div *ngFor="let feature of features" class="flex items-start gap-4">
           <div class="w-10 h-10 rounded-lg bg-[#111] border border-white/5 flex items-center justify-center shrink-0 text-[#C65A1E]">
             <iconify-icon [attr.icon]="feature.icon" width="22"></iconify-icon>
           </div>
           <div>
             <h4 class="text-sm font-medium text-white mb-1">{{ feature.title }}</h4>
-            <p class="text-xs text-neutral-300 leading-relaxed">{{ feature.description }}</p>
+            <p class="text-xs text-neutral-400 leading-relaxed">{{ feature.description }}</p>
           </div>
         </div>
       </div>
     </div>
+
   </div>
 </section>

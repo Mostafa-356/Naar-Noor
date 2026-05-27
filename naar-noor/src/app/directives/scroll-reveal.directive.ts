@@ -5,6 +5,7 @@ import { Directive, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
   standalone: true
 })
 export class RevealDirective implements OnInit, OnDestroy {
+  @Input() reveal: any;
   @Input() revealDelay = 0;
   @Input() revealFrom: 'bottom' | 'left' | 'right' | 'scale' = 'bottom';
 

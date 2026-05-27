@@ -1,48 +1,63 @@
-<section id="locations" class="py-24 px-6">
-  <div class="max-w-5xl mx-auto bg-[#0f0f0f] border border-white/5 rounded-xl overflow-hidden flex flex-col md:flex-row shadow-2xl">
-    <!-- Map Image with Overlay -->
-    <div class="w-full md:w-1/2 min-h-[300px] relative bg-[#0a0a0a]">
-      <img 
-        src="assets/locations/cooking-fire.jpg" 
-        alt="Map Location"
-        loading="lazy"
-        class="absolute inset-0 w-full h-full object-cover opacity-20 grayscale mix-blend-luminosity">
-      <div class="absolute inset-0 bg-gradient-to-r from-transparent to-[#0f0f0f]"></div>
-      <!-- Orange location marker -->
-      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[#C65A1E] flex flex-col items-center drop-shadow-[0_0_15px_rgba(198,90,30,0.5)]">
-        <iconify-icon icon="solar:map-point-bold" width="32"></iconify-icon>
-      </div>
+<section id="locations" class="py-16 sm:py-20 md:py-24 px-4 sm:px-6">
+  <div class="max-w-5xl mx-auto">
+
+    <div reveal [revealDelay]="0" class="text-center mb-10 md:mb-12">
+      <span class="text-[#C65A1E] text-xs font-medium tracking-[0.2em] uppercase mb-3 block">Find Us</span>
+      <h2 class="font-['Forum'] text-3xl sm:text-4xl md:text-5xl text-white tracking-tight">Visit Us</h2>
     </div>
 
-    <!-- Information Panel -->
-    <div class="w-full md:w-1/2 p-10 md:p-12 flex flex-col justify-center">
-      <h2 class="font-['Forum'] text-3xl text-white tracking-tighter mb-8">Visit Us</h2>
-      
-      <div class="space-y-6">
-        <div>
-          <h4 class="text-[10px] text-neutral-500 uppercase tracking-wider font-medium mb-2 flex items-center gap-1.5">
-            <iconify-icon icon="solar:map-point-linear" width="14"></iconify-icon> Address
-          </h4>
-          <p class="text-sm text-neutral-300 font-light leading-relaxed">
-            Town Centre,<br/>
-            St Peter Port,<br/>
-            Guernsey, GY1 2PN
-          </p>
-        </div>
+    <div reveal [revealDelay]="100" revealFrom="bottom"
+         class="bg-[#0f0f0f] border border-white/5 rounded-2xl overflow-hidden flex flex-col md:flex-row shadow-2xl">
 
-        <div class="h-px w-full bg-white/5"></div>
-
-        <div>
-          <h4 class="text-[10px] text-neutral-500 uppercase tracking-wider font-medium mb-2 flex items-center gap-1.5">
-            <iconify-icon icon="solar:clock-circle-linear" width="14"></iconify-icon> Hours
-          </h4>
-          <div class="grid grid-cols-2 gap-2 max-w-xs text-xs text-neutral-300 font-light">
-            <span class="text-neutral-500">Lunch:</span> <span>12:00 PM – 2:00 PM</span>
-            <span class="text-neutral-500">Dinner:</span> <span>6:00 PM – 9:00 PM</span>
-          </div>
-          <p class="text-[10px] text-[#C65A1E] mt-3 font-medium">Closed on Mondays</p>
+      <!-- Map visual -->
+      <div class="w-full md:w-1/2 min-h-[220px] sm:min-h-[280px] md:min-h-[320px] relative bg-[#0a0a0a]">
+        <img
+          src="assets/locations/cooking-fire.jpg"
+          alt="Restaurant location"
+          loading="lazy"
+          class="absolute inset-0 w-full h-full object-cover opacity-20 grayscale mix-blend-luminosity">
+        <div class="absolute inset-0 bg-gradient-to-r from-transparent to-[#0f0f0f]"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[#C65A1E] flex flex-col items-center drop-shadow-[0_0_20px_rgba(198,90,30,0.6)]">
+          <iconify-icon icon="solar:map-point-bold" width="40"></iconify-icon>
         </div>
       </div>
+
+      <!-- Info panel -->
+      <div class="w-full md:w-1/2 p-8 sm:p-10 md:p-12 flex flex-col justify-center">
+        <div class="space-y-6">
+          <div>
+            <h4 class="text-[10px] text-neutral-500 uppercase tracking-wider font-medium mb-2 flex items-center gap-1.5">
+              <iconify-icon icon="solar:map-point-linear" width="14"></iconify-icon> Address
+            </h4>
+            <p class="text-sm text-neutral-300 font-light leading-relaxed">
+              Town Centre,<br/>
+              St Peter Port,<br/>
+              Guernsey, GY1 2PN
+            </p>
+          </div>
+
+          <div class="h-px w-full bg-white/5"></div>
+
+          <div>
+            <h4 class="text-[10px] text-neutral-500 uppercase tracking-wider font-medium mb-2 flex items-center gap-1.5">
+              <iconify-icon icon="solar:clock-circle-linear" width="14"></iconify-icon> Opening Hours
+            </h4>
+            <div class="grid grid-cols-2 gap-x-6 gap-y-1.5 text-xs text-neutral-300 font-light">
+              <span class="text-neutral-500">Lunch</span> <span>12:00 PM – 2:00 PM</span>
+              <span class="text-neutral-500">Dinner</span> <span>6:00 PM – 9:00 PM</span>
+            </div>
+            <p class="text-[10px] text-[#C65A1E] mt-3 font-medium uppercase tracking-widest">Closed on Mondays</p>
+          </div>
+
+          <div class="h-px w-full bg-white/5"></div>
+
+          <div class="flex items-center gap-3">
+            <iconify-icon icon="solar:phone-linear" width="16" class="text-[#C65A1E]"></iconify-icon>
+            <span class="text-sm text-neutral-300 font-light">+44 (0) 1481 123456</span>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>

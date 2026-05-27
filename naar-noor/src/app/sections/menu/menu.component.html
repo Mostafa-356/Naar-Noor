@@ -1,34 +1,57 @@
-<section id="menu" class="py-6 px-6 bg-[#0d0d0d]">
-  <div class="max-w-4xl mx-auto">
-    <div class="text-center mb-16">
-      <span class="text-[#C65A1E] text-xs font-medium tracking-[0.2em] uppercase mb-2 block">Signatures</span>
-      <h2 class="font-['Forum'] text-4xl md:text-5xl text-white tracking-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">Crafted With Passion</h2>
+<section id="menu" class="py-16 sm:py-20 md:py-24 px-4 sm:px-6 bg-[#0d0d0d]">
+  <div class="max-w-5xl mx-auto">
+
+    <!-- Header -->
+    <div reveal [revealDelay]="0" class="text-center mb-10 md:mb-12">
+      <span class="text-[#C65A1E] text-xs font-medium tracking-[0.2em] uppercase mb-3 block">Signatures</span>
+      <h2 class="font-['Forum'] text-3xl sm:text-4xl md:text-5xl text-white tracking-tight">Crafted With Passion</h2>
     </div>
 
-    <div *ngIf="loading" class="space-y-10">
+    <!-- Category tabs -->
+    <div *ngIf="!loading && !error" reveal [revealDelay]="80"
+         class="flex flex-wrap items-center justify-center gap-2 mb-10 md:mb-12">
+      <button *ngFor="let cat of categories"
+              (click)="setCategory(cat)"
+              class="px-4 py-2 rounded-full text-xs font-medium tracking-wider uppercase transition-all duration-300"
+              [ngClass]="activeCategory === cat
+                ? 'bg-[#C65A1E] text-white shadow-[0_0_15px_rgba(198,90,30,0.3)]'
+                : 'text-neutral-400 border border-white/10 hover:border-white/25 hover:text-white'">
+        {{ cat }}
+      </button>
+    </div>
+
+    <!-- Skeleton -->
+    <div *ngIf="loading" class="space-y-8">
       <div *ngFor="let i of [1,2,3,4,5]" class="animate-pulse">
         <div class="flex items-baseline justify-between mb-2">
           <div class="h-5 bg-white/10 rounded w-48"></div>
-          <div class="h-5 bg-white/10 rounded w-12"></div>
+          <div class="h-5 bg-white/10 rounded w-14"></div>
         </div>
         <div class="h-4 bg-white/5 rounded w-full"></div>
       </div>
     </div>
 
+    <!-- Error -->
     <div *ngIf="error" class="text-center py-12 text-neutral-500 text-sm">
       Unable to load the menu right now. Please call us or visit in person.
     </div>
 
-    <div *ngIf="!loading && !error" class="space-y-10">
-      <div *ngFor="let item of menuItems" class="group">
-        <div class="flex items-baseline justify-between mb-2">
-          <h3 class="font-['Forum'] text-xl md:text-2xl text-white tracking-tight group-hover:text-[#C65A1E] transition-colors">
+    <!-- Menu list — 2 columns on lg+ -->
+    <div *ngIf="!loading && !error"
+         class="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-8">
+      <div *ngFor="let item of filteredItems; let i = index"
+           reveal
+           [revealDelay]="(i % 10) * 40"
+           revealFrom="bottom"
+           class="group">
+        <div class="flex items-baseline justify-between mb-1.5">
+          <h3 class="font-['Forum'] text-lg sm:text-xl md:text-2xl text-white tracking-tight group-hover:text-[#C65A1E] transition-colors leading-tight">
             {{ item.name }}
           </h3>
-          <div class="flex-grow border-b border-white/10 border-dotted mx-4 relative top-[-6px]"></div>
-          <span class="font-['Forum'] text-xl text-white">{{ item.price }}</span>
+          <div class="flex-grow border-b border-white/10 border-dotted mx-3 relative top-[-4px]"></div>
+          <span class="font-['Forum'] text-lg sm:text-xl text-white shrink-0">{{ item.price }}</span>
         </div>
-        <p class="text-sm text-neutral-200 font-light pr-12">{{ item.description }}</p>
+        <p class="text-xs sm:text-sm text-neutral-400 font-light leading-relaxed">{{ item.description }}</p>
         <div *ngIf="item.isVegetarian || item.isVegan" class="mt-1.5 flex gap-2">
           <span *ngIf="item.isVegan" class="text-[10px] tracking-widest uppercase text-[#C65A1E] font-medium">Vegan</span>
           <span *ngIf="item.isVegetarian && !item.isVegan" class="text-[10px] tracking-widest uppercase text-emerald-500 font-medium">Vegetarian</span>
@@ -36,10 +59,12 @@
       </div>
     </div>
 
-    <div class="mt-16 text-center">
+    <!-- CTA -->
+    <div *ngIf="!loading && !error" class="mt-14 sm:mt-16 text-center">
       <a href="#" class="inline-flex items-center justify-center px-8 py-3.5 text-sm font-medium text-white border border-white/20 rounded-xl hover:bg-white hover:text-[#0a0a0a] transition-all duration-300">
         View Full Menu
       </a>
     </div>
+
   </div>
 </section>

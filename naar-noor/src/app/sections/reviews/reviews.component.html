@@ -34,7 +34,7 @@
     </div>
 
     <!-- Review cards -->
-    <div *ngIf="!loading && !error" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div *ngIf="!loading && !error" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
       <div *ngFor="let review of reviews; let i = index"
            reveal
            [revealDelay]="revealDelay(i)"
