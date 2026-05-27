@@ -22,8 +22,4 @@ import { ToastComponent } from './components/toast/toast.component';
 })
 export class AppComponent {
   title = 'Naar & Noor';
-
-  ngOnInit() {
-    window.scrollTo(0, 0);
-  }
 }

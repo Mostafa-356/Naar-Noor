@@ -1,49 +1,39 @@
 <app-hero></app-hero>
+<app-about></app-about>
+<app-category></app-category>
 
-@defer (on viewport) {
-  <app-about></app-about>
-} @placeholder {
-  <div class="h-32"></div>
-}
-
-@defer (on viewport) {
-  <app-category></app-category>
-} @placeholder {
-  <div class="h-24"></div>
-}
-
-@defer (on viewport) {
+@defer (on idle) {
   <app-menu></app-menu>
 } @placeholder {
-  <div class="h-64 bg-[#0d0d0d]"></div>
+  <div class="py-24 px-6 bg-[#0d0d0d] min-h-[480px]"></div>
 }
 
-@defer (on viewport) {
+@defer (on idle) {
   <app-cinematic-banner></app-cinematic-banner>
 } @placeholder {
-  <div class="h-40"></div>
+  <div class="min-h-[300px]"></div>
 }
 
 @defer (on viewport) {
   <app-chefs></app-chefs>
 } @placeholder {
-  <div class="h-64"></div>
+  <div class="min-h-[640px] py-24"></div>
 }
 
 @defer (on viewport) {
   <app-reviews></app-reviews>
 } @placeholder {
-  <div class="h-48 bg-[#0d0d0d]"></div>
+  <div class="min-h-[480px] py-24 bg-[#0d0d0d]"></div>
 }
 
 @defer (on viewport) {
   <app-blog></app-blog>
 } @placeholder {
-  <div class="h-40"></div>
+  <div class="min-h-[480px] py-24"></div>
 }
 
 @defer (on viewport) {
   <app-locations></app-locations>
 } @placeholder {
-  <div class="h-40"></div>
+  <div class="min-h-[380px] py-16"></div>
 }
