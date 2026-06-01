@@ -2,7 +2,7 @@
   "version": 2,
   "buildCommand": "npm run build",
   "outputDirectory": "dist/lost-yeti/browser",
-  "installCommand": "npm ci",
+  "installCommand": "npm ci --include=dev",
   "env": {
     "ANGULAR_CLI_ANALYTICS": "false"
   },
