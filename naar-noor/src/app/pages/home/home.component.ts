@@ -1,8 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { HeroComponent } from '../../sections/hero/hero.component';
-import { ReservationComponent } from '../../sections/reservation/reservation.component';
 import { AboutComponent } from '../../sections/about/about.component';
 import { CategoryComponent } from '../../sections/category/category.component';
 import { MenuComponent } from '../../sections/menu/menu.component';
@@ -17,10 +14,7 @@ import { SeoService } from '../../services/seo.service';
   selector: 'app-home',
   standalone: true,
   imports: [
-    CommonModule,
-    FormsModule,
     HeroComponent,
-    ReservationComponent,
     AboutComponent,
     CategoryComponent,
     MenuComponent,

@@ -1,5 +1,6 @@
 import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { CartService } from '../../services/cart.service';
 import { RevealDirective } from '../../directives/scroll-reveal.directive';
@@ -9,7 +10,7 @@ import { MenuItem, MenuItemView } from '../../models';
 @Component({
   selector: 'app-menu',
   standalone: true,
-  imports: [CommonModule, RevealDirective],
+  imports: [CommonModule, RouterModule, RevealDirective],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.css']
