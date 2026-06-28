@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <!-- Coverlet In-Process Data Collector Configuration for NaarNoor Project -->
+  <!-- Coverage Thresholds (Requirement 1.1):
+       - Domain Layer: 85% line coverage
+       - Application Layer: 82% line coverage
+       - Infrastructure Layer: 78% line coverage
+       - API Layer: 80% line coverage
+       
+       Per-layer validation is performed by scripts that parse the coverage.cobertura.xml file
+       and compare actual coverage against these thresholds.
+  -->
+  
+  <InProcessDataCollector assemblyQualifiedName="Coverlet.Collector.DataCollection.CoverletInProcDataCollector, coverlet.collector, Version=6.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <Configuration>
+      <!-- Output Format: Cobertura XML for integration with ReportGenerator and CI/CD tools -->
+      <Format>cobertura</Format>
+      
+      <!-- Global Threshold: 78% (Infrastructure minimum, other layers enforced via post-processing) -->
+      <!-- This threshold prevents accidental commits with severely low coverage -->
+      <Threshold>78</Threshold>
+      <ThresholdType>line</ThresholdType>
+      <ThresholdStat>minimum</ThresholdStat>
+      
+      <!-- Enable source link support for better code navigation in coverage reports -->
+      <UseSourceLink>true</UseSourceLink>
+      
+      <!-- Include only production assemblies for coverage (Domain, Application, Infrastructure, API layers) -->
+      <Include>
+        [NaarNoor.Domain]*
+        [NaarNoor.Application]*
+        [NaarNoor.Infrastructure]*
+        [NaarNoor.API]*
+      </Include>
+      
+      <!-- Exclude test assemblies, build artifacts, and generated code -->
+      <Exclude>
+        [NaarNoor.*.Tests]*
+        [*.Tests]*
+        **/bin/**/*
+        **/obj/**/*
+        **/Generated/*
+        **/Migrations/*
+      </Exclude>
+      
+      <!-- Configuration Options -->
+      <SkipAutoProps>false</SkipAutoProps>
+      <SingleHitBreakdown>false</SingleHitBreakdown>
+      <IncludeTestAssembly>false</IncludeTestAssembly>
+      
+      <!-- Output Location: Coverage reports generated in project test directories by Coverlet -->
+      <!-- Convention: {ProjectTestResults}/{guid}/coverage.cobertura.xml
+           Merged reports should be consolidated to ./coverage/coverage.cobertura.xml for reporting
+      -->
+    </Configuration>
+  </InProcessDataCollector>
+</RunSettings>

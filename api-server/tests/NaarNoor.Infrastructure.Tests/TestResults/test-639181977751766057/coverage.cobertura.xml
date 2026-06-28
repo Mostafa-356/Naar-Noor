@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<coverage version="1.9" timestamp="639181977751871664" lines-valid="250" lines-covered="192" line-rate="0.768" branches-covered="0" branches-valid="0" branch-rate="0" complexity="0">
+  <packages>
+    <package name="NaarNoor.Infrastructure" line-rate="0.768" branch-rate="0" complexity="0">
+      <classes>
+        <class name="NaarNoor.Infrastructure.Entity1" line-rate="0.76802" branch-rate="0" complexity="0">
+          <methods/>
+          <lines>
+            <line number="1" hits="1"/>
+            <line number="2" hits="1"/>
+            <line number="3" hits="1"/>
+            <line number="4" hits="0"/>
+          </lines>
+        </class>
+        <class name="NaarNoor.Infrastructure.Entity2" line-rate="0.718" branch-rate="0" complexity="0">
+          <methods/>
+          <lines>
+            <line number="1" hits="1"/>
+            <line number="2" hits="0"/>
+            <line number="3" hits="0"/>
+          </lines>
+        </class>
+      </classes>
+    </package>
+  </packages>
+</coverage>

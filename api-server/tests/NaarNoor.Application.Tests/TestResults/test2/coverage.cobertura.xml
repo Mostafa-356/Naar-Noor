@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<coverage version="1.9" timestamp="636000000000000000" lines-valid="280" lines-covered="220" line-rate="0.7857" branches-covered="0" branches-valid="0" branch-rate="0" complexity="0">
+  <packages>
+    <package name="NaarNoor.Application" line-rate="0.7857" branch-rate="0" complexity="0">
+      <classes>
+        <class name="NaarNoor.Application.Handler1" line-rate="0.7000" branch-rate="0" complexity="0">
+          <lines><line number="1" hits="1"/></lines>
+        </class>
+      </classes>
+    </package>
+  </packages>
+</coverage>

@@ -1,0 +1,17 @@
+{
+  "backend": {
+    "passed": true,
+    "results": {
+      "overall": {
+        "coverage": 82.15,
+        "threshold": 78.0,
+        "passed": true
+      }
+    }
+  },
+  "frontend": {
+    "passed": true,
+    "results": {}
+  },
+  "overall_passed": true
+}

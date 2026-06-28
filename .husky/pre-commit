@@ -1,0 +1,61 @@
+#!/usr/bin/env sh
+# Husky pre-commit hook - runs tests before allowing commits
+
+echo "🧪 Running pre-commit tests..."
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+EXIT_CODE=0
+
+# Backend tests
+if [ -d "api-server" ]; then
+  echo ""
+  echo "📦 Checking backend tests..."
+  if command -v dotnet &> /dev/null; then
+    cd api-server
+    dotnet test --filter "Category=UnitTest" --no-build --verbosity quiet 2>/dev/null
+    if [ $? -ne 0 ]; then
+      echo "❌ Backend tests failed"
+      EXIT_CODE=1
+    else
+      echo "✅ Backend tests passed"
+    fi
+    cd ..
+  else
+    echo "⚠️  dotnet not found - skipping backend tests"
+  fi
+fi
+
+# Frontend tests
+if [ -d "naar-noor" ] && [ -f "naar-noor/package.json" ]; then
+  echo ""
+  echo "📱 Checking frontend tests..."
+  if command -v npm &> /dev/null; then
+    cd naar-noor
+    npm test -- --run 2>/dev/null
+    if [ $? -ne 0 ]; then
+      echo "❌ Frontend tests failed"
+      EXIT_CODE=1
+    else
+      echo "✅ Frontend tests passed"
+    fi
+    cd ..
+  else
+    echo "⚠️  npm not found - skipping frontend tests"
+  fi
+fi
+
+echo ""
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+if [ $EXIT_CODE -eq 0 ]; then
+  echo "✅ All pre-commit tests passed - commit proceeding"
+  exit 0
+else
+  echo ""
+  echo "❌ Pre-commit tests failed - commit blocked"
+  echo ""
+  echo "Fix the failing tests and try again, or run:"
+  echo "  git commit --no-verify  (not recommended)"
+  echo ""
+  exit 1
+fi

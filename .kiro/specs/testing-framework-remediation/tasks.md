@@ -10,7 +10,7 @@
 
 ### Section 1: Coverage Configuration (4-6 hours)
 
-- [ ] 1.1 Create coverlet.runsettings configuration file
+- [x] 1.1 Create coverlet.runsettings configuration file
   - _Create_ `coverlet.runsettings` in repo root
   - _Configure_ Cobertura format output
   - _Set_ layer thresholds: Domain 85%, App 82%, Infra 78%, API 80%
@@ -18,7 +18,7 @@
   - _Verify_ coverage.cobertura.xml generated correctly
   - _Requirements: 1.1_
 
-- [ ] 1.2 Create ReportGenerator configuration
+- [x] 1.2 Create ReportGenerator configuration
   - _Create_ script to invoke ReportGenerator
   - _Configure_ HTML report generation
   - _Set_ output directory to `/coverage-reports/`
@@ -96,7 +96,7 @@
 
 ### Section 3: Pre-commit Hooks (2-3 hours)
 
-- [ ] 3.1 Configure Husky pre-commit hooks
+- [x] 3.1 Configure Husky pre-commit hooks
   - _Install_ Husky: `npm install husky --save-dev`
   - _Initialize_ Husky: `npx husky install`
   - _Create_ `.husky/pre-commit` hook script

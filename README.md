@@ -73,6 +73,75 @@ npm install
 npm run dev
 ```
 
+## 🧪 Testing and Git Hooks
+
+### Post-Clone Setup
+
+After cloning the repository, install hooks for your development environment:
+
+```bash
+cd naar-noor
+npm run husky:install
+```
+
+This command sets up Git hooks that automatically run tests before each commit, preventing commits with failing tests.
+
+### What Are These Hooks?
+
+Git hooks are automated scripts that run at specific points in your Git workflow:
+
+- **pre-commit**: Runs frontend tests before allowing a commit. Fails if tests don't pass.
+- **post-merge**: Updates dependencies automatically if `package.json` changes during a pull/merge.
+- **install**: Ensures dependencies are installed after fresh clones.
+
+### How Pre-Commit Hooks Work
+
+```bash
+# You make changes and stage them
+git add .
+
+# You attempt to commit
+git commit -m "feat: add new feature"
+
+# Pre-commit hook runs automatically
+# If tests ✅ PASS → Commit succeeds
+# If tests ❌ FAIL → Commit blocked, fix tests and retry
+```
+
+### Running Tests Manually
+
+```bash
+cd naar-noor
+npm test      # Run tests in watch mode
+npm run test:ci  # Run tests once with coverage (CI mode)
+```
+
+### Bypassing Hooks (Emergency Only)
+
+If you absolutely must commit without running tests:
+
+```bash
+# Skip all hooks
+git commit --no-verify
+
+# Or set environment variable
+HUSKY=0 git commit -m "emergency fix"
+```
+
+⚠️ **Use sparingly** — hooks exist to maintain code quality. Bypassing them defeats their purpose.
+
+### Detailed Testing Documentation
+
+For comprehensive testing guides, see:
+
+- [docs/TESTING.md](docs/TESTING.md) — Quick start and common commands
+- [docs/TESTING_PROPERTIES.md](docs/TESTING_PROPERTIES.md) — Property-based testing tutorial
+- [docs/TESTING_MOCKING.md](docs/TESTING_MOCKING.md) — Mock and fixture patterns
+- [docs/TESTING_COVERAGE.md](docs/TESTING_COVERAGE.md) — Coverage interpretation
+- [docs/TESTING_TROUBLESHOOTING.md](docs/TESTING_TROUBLESHOOTING.md) — Common issues and fixes
+
+For hook-specific details, see [naar-noor/.husky/README.md](naar-noor/.husky/README.md).
+
 ## 🚀 Deployment
 
 See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for full deployment instructions.

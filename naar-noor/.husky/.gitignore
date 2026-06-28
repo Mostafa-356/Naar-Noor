@@ -1,0 +1,7 @@
+*
+!.gitignore
+!pre-commit
+!pre-commit.cmd
+!install
+!post-merge
+!README.md
