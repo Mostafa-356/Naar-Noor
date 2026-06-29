@@ -11,6 +11,26 @@ module.exports = {
   transformIgnorePatterns: [
     'node_modules/(?!(@angular|rxjs|zone.js)/)',
   ],
+  collectCoverage: true,
+  coverageDirectory: 'coverage',
+  coverageReporters: ['text', 'lcov', 'cobertura'],
+  collectCoverageFrom: [
+    'src/app/services/**/*.ts',
+    'src/app/components/**/*.ts',
+    '!src/app/**/*.spec.ts',
+    '!src/app/**/*.d.ts',
+    '!src/app/**/tests/*.base.ts',
+    '!src/app/**/tests/component-test.base.ts',
+    '!src/app/**/tests/service-test.base.ts',
+  ],
+  coverageThresholds: {
+    global: {
+      statements: 75,
+      branches: 65,
+      functions: 75,
+      lines: 75,
+    },
+  },
   globals: {
     'ts-jest': {
       tsconfig: '<rootDir>/tsconfig.spec.json',

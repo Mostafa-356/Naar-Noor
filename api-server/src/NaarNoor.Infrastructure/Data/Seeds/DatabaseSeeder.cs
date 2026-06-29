@@ -9,7 +9,11 @@ public static class DatabaseSeeder
     public static async Task SeedAsync(ApplicationDbContext context)
     {
         await context.Database.MigrateAsync();
+        await SeedDataAsync(context);
+    }
 
+    public static async Task SeedDataAsync(ApplicationDbContext context)
+    {
         if (!await context.MenuItems.AnyAsync())
             await SeedMenuItemsAsync(context);
 

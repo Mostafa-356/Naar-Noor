@@ -261,4 +261,68 @@ public class SupabaseAuthServiceTests
         success.Should().BeFalse();
         error.Should().NotBeNull();
     }
+
+    [Fact]
+    public async Task VerifyTokenAsync_WhenResponseHasNoIdProperty_ReturnsFalse()
+    {
+        // Response is 200 OK but missing the "id" field
+        var response = new { email = "user@test.com", role = "anon" };
+        var service = CreateService(SuccessHandler(response));
+
+        var (valid, userId, error) = await service.VerifyTokenAsync("some-token");
+
+        valid.Should().BeFalse();
+        userId.Should().BeNull();
+        error.Should().Be("Invalid token: No user found");
+    }
+
+    [Fact]
+    public async Task GetCurrentUserAsync_WhenResponseMissingEmail_ReturnsFalse()
+    {
+        // Response has "id" but missing "email"
+        var response = new { id = "user-abc" };
+        var service = CreateService(SuccessHandler(response));
+
+        var (success, userId, email, error) = await service.GetCurrentUserAsync("some-token");
+
+        success.Should().BeFalse();
+        userId.Should().BeNull();
+        email.Should().BeNull();
+        error.Should().NotBeNull();
+    }
+
+    [Fact]
+    public async Task GetCurrentUserAsync_WhenResponseMissingIdAndEmail_ReturnsFalse()
+    {
+        // Response is 200 OK but missing both "id" and "email"
+        var response = new { role = "anon" };
+        var service = CreateService(SuccessHandler(response));
+
+        var (success, userId, email, error) = await service.GetCurrentUserAsync("some-token");
+
+        success.Should().BeFalse();
+        error.Should().Be("Failed to get current user");
+    }
+
+    [Fact]
+    public async Task LogoutUserAsync_WithDifferentUserId_OnSuccess_ReturnsTrue()
+    {
+        var service = CreateService(SuccessHandler(new { }));
+
+        var (success, error) = await service.LogoutUserAsync("different-user-789");
+
+        success.Should().BeTrue();
+        error.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task ResetPasswordAsync_WithDifferentEmail_OnSuccess_ReturnsTrue()
+    {
+        var service = CreateService(SuccessHandler(new { }));
+
+        var (success, error) = await service.ResetPasswordAsync("other@domain.com");
+
+        success.Should().BeTrue();
+        error.Should().BeNull();
+    }
 }

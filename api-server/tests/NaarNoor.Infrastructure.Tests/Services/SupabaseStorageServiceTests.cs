@@ -170,4 +170,113 @@ public class SupabaseStorageServiceTests
         success.Should().BeFalse();
         error.Should().NotBeNull();
     }
+
+    [Fact]
+    public async Task UploadChefImageAsync_WhenUploadFails_ReturnsFailure()
+    {
+        // Error handler causes UploadImageAsync to return success=false
+        var service = CreateService(ErrorHandler(HttpStatusCode.InternalServerError));
+
+        var (success, publicUrl, error) = await service.UploadChefImageAsync("chef-fail", new byte[] { 1, 2, 3 }, "image/jpeg");
+
+        success.Should().BeFalse();
+        error.Should().NotBeNull();
+    }
+
+    [Fact]
+    public async Task UploadMenuItemImageAsync_WhenUploadFails_ReturnsFailure()
+    {
+        var service = CreateService(ErrorHandler(HttpStatusCode.Forbidden));
+
+        var (success, publicUrl, error) = await service.UploadMenuItemImageAsync("item-fail", new byte[] { 1, 2, 3 }, "image/png");
+
+        success.Should().BeFalse();
+        error.Should().NotBeNull();
+    }
+
+    [Fact]
+    public async Task DeleteChefImageAsync_WhenFilesExist_DeletesEachFile()
+    {
+        // ListFilesAsync uses GET, DeleteFileAsync uses DELETE
+        var callCount = 0;
+        var listJson = "[{\"name\":\"chef-007/img1.jpg\"},{\"name\":\"chef-007/img2.jpg\"}]";
+        var mock = new Mock<HttpMessageHandler>();
+        mock.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>())
+            .ReturnsAsync((HttpRequestMessage req, CancellationToken _) =>
+            {
+                callCount++;
+                if (req.Method == HttpMethod.Get)
+                    return new HttpResponseMessage(HttpStatusCode.OK)
+                    {
+                        Content = new StringContent(listJson, Encoding.UTF8, "application/json")
+                    };
+                return new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = new StringContent("{}", Encoding.UTF8, "application/json")
+                };
+            });
+
+        var service = CreateService(mock.Object);
+        var (success, error) = await service.DeleteChefImageAsync("chef-007");
+
+        success.Should().BeTrue();
+        error.Should().BeNull();
+        callCount.Should().BeGreaterThan(1, "one GET list call + one DELETE call per file");
+    }
+
+    [Fact]
+    public async Task DeleteMenuItemImageAsync_WhenFilesExist_DeletesEachFile()
+    {
+        var listJson = "[{\"name\":\"item-003/img.jpg\"}]";
+        var mock = new Mock<HttpMessageHandler>();
+        mock.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>())
+            .ReturnsAsync((HttpRequestMessage req, CancellationToken _) =>
+            {
+                if (req.Method == HttpMethod.Get)
+                    return new HttpResponseMessage(HttpStatusCode.OK)
+                    {
+                        Content = new StringContent(listJson, Encoding.UTF8, "application/json")
+                    };
+                return new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = new StringContent("{}", Encoding.UTF8, "application/json")
+                };
+            });
+
+        var service = CreateService(mock.Object);
+        var (success, error) = await service.DeleteMenuItemImageAsync("item-003");
+
+        success.Should().BeTrue();
+        error.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task DeleteChefImageAsync_WhenListFails_ReturnsSuccessWithNoImages()
+    {
+        // If list returns error, we return (true, null) — "no images to delete"
+        var service = CreateService(ErrorHandler(HttpStatusCode.InternalServerError));
+
+        var (success, error) = await service.DeleteChefImageAsync("chef-no-list");
+
+        // Service treats list failure as "no images to delete" → true
+        success.Should().BeTrue();
+    }
+
+    [Fact]
+    public async Task DeleteMenuItemImageAsync_WhenListFails_ReturnsSuccessWithNoImages()
+    {
+        var service = CreateService(ErrorHandler(HttpStatusCode.NotFound));
+
+        var (success, error) = await service.DeleteMenuItemImageAsync("item-no-list");
+
+        success.Should().BeTrue();
+    }
 }

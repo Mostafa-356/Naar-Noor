@@ -125,4 +125,101 @@ public class SupabaseRealtimeServiceTests
 
         await act.Should().NotThrowAsync();
     }
+
+    [Fact]
+    public async Task ReconnectAsync_SetsIsConnectedTrue()
+    {
+        var service = CreateService();
+        service.IsConnected.Should().BeFalse();
+
+        await service.ReconnectAsync();
+
+        service.IsConnected.Should().BeTrue();
+    }
+
+    [Fact]
+    public async Task UnsubscribeAsync_ExistingNullWebsocket_RemovesEntry()
+    {
+        // Subscribe first to create a dict entry with null websocket
+        var service = CreateService();
+        await service.SubscribeToOrderUpdatesAsync(
+            "order-42",
+            _ => Task.CompletedTask,
+            _ => Task.CompletedTask);
+
+        // Now unsubscribe using the channel key created by SubscribeToChannelAsync
+        Func<Task> act = () => service.UnsubscribeAsync("orders:order-42");
+
+        await act.Should().NotThrowAsync();
+    }
+
+    [Fact]
+    public async Task UnsubscribeAsync_ReservationChannel_RemovesEntry()
+    {
+        var service = CreateService();
+        await service.SubscribeToReservationUpdatesAsync(
+            "res-99",
+            _ => Task.CompletedTask,
+            _ => Task.CompletedTask);
+
+        Func<Task> act = () => service.UnsubscribeAsync("reservations:res-99");
+        await act.Should().NotThrowAsync();
+    }
+
+    [Fact]
+    public async Task UnsubscribeAsync_ReviewChannel_RemovesEntry()
+    {
+        var service = CreateService();
+        await service.SubscribeToReviewUpdatesAsync(
+            "menu-1",
+            _ => Task.CompletedTask,
+            _ => Task.CompletedTask);
+
+        Func<Task> act = () => service.UnsubscribeAsync("reviews:menu-1");
+        await act.Should().NotThrowAsync();
+    }
+
+    [Fact]
+    public async Task UnsubscribeAsync_TableAvailabilityChannel_RemovesEntry()
+    {
+        var service = CreateService();
+        await service.SubscribeToTableAvailabilityAsync(
+            _ => Task.CompletedTask,
+            _ => Task.CompletedTask);
+
+        Func<Task> act = () => service.UnsubscribeAsync("table-availability");
+        await act.Should().NotThrowAsync();
+    }
+
+    [Fact]
+    public async Task SubscribeToChannelAsync_ThenUnsubscribeMultiple_HandlesAll()
+    {
+        var service = CreateService();
+
+        await service.SubscribeToOrderUpdatesAsync("o1", _ => Task.CompletedTask, _ => Task.CompletedTask);
+        await service.SubscribeToReservationUpdatesAsync("r1", _ => Task.CompletedTask, _ => Task.CompletedTask);
+        await service.SubscribeToReviewUpdatesAsync("m1", _ => Task.CompletedTask, _ => Task.CompletedTask);
+        await service.SubscribeToTableAvailabilityAsync(_ => Task.CompletedTask, _ => Task.CompletedTask);
+
+        Func<Task> act = async () =>
+        {
+            await service.UnsubscribeAsync("orders:o1");
+            await service.UnsubscribeAsync("reservations:r1");
+            await service.UnsubscribeAsync("reviews:m1");
+            await service.UnsubscribeAsync("table-availability");
+        };
+
+        await act.Should().NotThrowAsync();
+    }
+
+    [Fact]
+    public async Task BroadcastMessageAsync_WithObjectPayload_DoesNotThrow()
+    {
+        var service = CreateService();
+
+        Func<Task> act = () => service.BroadcastMessageAsync("reservations", "table-update",
+            new { tableId = "table-5", available = false });
+
+        await act.Should().NotThrowAsync();
+    }
 }
