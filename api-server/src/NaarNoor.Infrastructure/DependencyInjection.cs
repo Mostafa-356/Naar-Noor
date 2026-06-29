@@ -46,8 +46,12 @@ public static class DependencyInjection
         services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
 
         // Supabase Services - REST API based implementation
-        var supabaseUrl = configuration["Supabase:Url"] ?? throw new InvalidOperationException("Supabase URL not configured");
-        var supabaseAnonKey = configuration["Supabase:AnonKey"] ?? throw new InvalidOperationException("Supabase Anonymous Key not configured");
+        var supabaseUrl = Environment.GetEnvironmentVariable("SUPABASE_URL")
+            ?? configuration["Supabase:Url"]
+            ?? throw new InvalidOperationException("Supabase URL not configured");
+        var supabaseAnonKey = Environment.GetEnvironmentVariable("SUPABASE_ANON_KEY")
+            ?? configuration["Supabase:AnonKey"]
+            ?? throw new InvalidOperationException("Supabase Anonymous Key not configured");
         
         services.AddHttpClient<ISupabaseAuthService, SupabaseAuthService>();
         services.AddHttpClient<ISupabaseStorageService, SupabaseStorageService>();

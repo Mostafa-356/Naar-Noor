@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "npx ng serve --port 5000 --host 0.0.0.0",
+    "dev": "node_modules/.bin/ng serve --port 5000 --host 0.0.0.0",
     "build": "npx ng build --configuration production",
     "test": "jest --config jest.config.js",
     "test:ci": "jest --config jest.config.js --forceExit",

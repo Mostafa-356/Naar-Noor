@@ -1,193 +1,197 @@
-using System;
-using System.Threading.Tasks;
-using FsCheck;
-using FsCheck.Xunit;
+using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
-using NaarNoor.Domain;
-using NaarNoor.Domain.ValueObjects;
-using NaarNoor.Infrastructure.Persistence;
+using NaarNoor.Domain.Entities;
+using NaarNoor.Domain.Enums;
+using NaarNoor.Infrastructure.Data;
 using NaarNoor.Infrastructure.Repositories;
 using Xunit;
 
-namespace NaarNoor.Infrastructure.Tests.Persistence
+namespace NaarNoor.Infrastructure.Tests.Persistence;
+
+public class RepositoryCrudPropertyTests : IAsyncLifetime
 {
-    /// <summary>
-    /// Property 7: Repository CRUD Round-Trip
-    /// Validates that Create-Read-Update-Delete operations work correctly
-    /// in isolation and in sequence (round-trip scenarios).
-    /// </summary>
-    public class RepositoryCrudPropertyTests : IAsyncLifetime
+    private ApplicationDbContext _context = null!;
+
+    public async Task InitializeAsync()
     {
-        private ApplicationDbContext _context;
-
-        public async Task InitializeAsync()
-        {
-            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase("TestDb_" + Guid.NewGuid())
-                .Options;
-            _context = new ApplicationDbContext(options);
-            await _context.Database.EnsureCreatedAsync();
-        }
-
-        public async Task DisposeAsync()
-        {
-            await _context.Database.EnsureDeletedAsync();
-            _context.Dispose();
-        }
-
-        [Property(MaxTest = 100)]
-        public async Task Property_CreateOperation_PersistsValidChef(string name, string specialization)
-        {
-            // Arrange: Valid chef data
-            if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(specialization))
-                return; // Skip invalid inputs
-
-            var chef = new Chef(name, specialization, yearsOfExperience: 5, rating: 4.5m);
-            var repository = new Repository<Chef>(_context);
-
-            // Act: Create
-            await repository.AddAsync(chef);
-            await _context.SaveChangesAsync();
-
-            // Assert: Chef exists in database
-            var retrieved = await repository.GetByIdAsync(chef.Id);
-            Assert.NotNull(retrieved);
-            Assert.Equal(name, retrieved.Name);
-            Assert.Equal(specialization, retrieved.Specialization);
-        }
-
-        [Property(MaxTest = 100)]
-        public async Task Property_ReadOperation_ReturnsCorrectEntity(string name)
-        {
-            // Arrange: Create a chef
-            if (string.IsNullOrWhiteSpace(name))
-                return;
-
-            var chef = new Chef(name, "Italian", yearsOfExperience: 3, rating: 4.0m);
-            var repository = new Repository<Chef>(_context);
-            await repository.AddAsync(chef);
-            await _context.SaveChangesAsync();
-
-            // Act: Read by ID
-            var retrieved = await repository.GetByIdAsync(chef.Id);
-
-            // Assert: Retrieved data matches
-            Assert.NotNull(retrieved);
-            Assert.Equal(chef.Id, retrieved.Id);
-            Assert.Equal(chef.Name, retrieved.Name);
-        }
-
-        [Property(MaxTest = 100)]
-        public async Task Property_UpdateOperation_PersistsChanges(string initialName, string updatedName)
-        {
-            // Arrange
-            if (string.IsNullOrWhiteSpace(initialName) || string.IsNullOrWhiteSpace(updatedName))
-                return;
-
-            var chef = new Chef(initialName, "French", yearsOfExperience: 2, rating: 3.5m);
-            var repository = new Repository<Chef>(_context);
-            await repository.AddAsync(chef);
-            await _context.SaveChangesAsync();
-
-            // Act: Update (using reflection to update name as it may be immutable)
-            var retrieved = await repository.GetByIdAsync(chef.Id);
-            var updatedChef = new Chef(updatedName, retrieved.Specialization, retrieved.YearsOfExperience, retrieved.Rating);
-            updatedChef.SetId(chef.Id);
-            await repository.UpdateAsync(updatedChef);
-            await _context.SaveChangesAsync();
-
-            // Assert: Changes persisted
-            var final = await repository.GetByIdAsync(chef.Id);
-            Assert.Equal(updatedName, final.Name);
-        }
-
-        [Property(MaxTest = 100)]
-        public async Task Property_DeleteOperation_RemovesEntity(string name)
-        {
-            // Arrange
-            if (string.IsNullOrWhiteSpace(name))
-                return;
-
-            var chef = new Chef(name, "Spanish", yearsOfExperience: 1, rating: 3.0m);
-            var repository = new Repository<Chef>(_context);
-            await repository.AddAsync(chef);
-            await _context.SaveChangesAsync();
-            var chefId = chef.Id;
-
-            // Act: Delete
-            await repository.DeleteAsync(chef);
-            await _context.SaveChangesAsync();
-
-            // Assert: Entity removed
-            var retrieved = await repository.GetByIdAsync(chefId);
-            Assert.Null(retrieved);
-        }
-
-        [Property(MaxTest = 100)]
-        public async Task Property_RoundTripCreateReadUpdate_MaintainsConsistency(string name, int experience)
-        {
-            // Arrange
-            if (string.IsNullOrWhiteSpace(name) || experience < 0)
-                return;
-
-            var initialRating = Math.Min(5.0m, Math.Max(0.0m, experience * 0.5m));
-            var chef = new Chef(name, "Japanese", yearsOfExperience: experience, rating: initialRating);
-            var repository = new Repository<Chef>(_context);
-
-            // Act 1: Create
-            await repository.AddAsync(chef);
-            await _context.SaveChangesAsync();
-
-            // Act 2: Read
-            var afterCreate = await repository.GetByIdAsync(chef.Id);
-
-            // Act 3: Update
-            var updatedChef = new Chef(name + " Updated", afterCreate.Specialization, 
-                experience + 1, afterCreate.Rating + 0.5m);
-            updatedChef.SetId(chef.Id);
-            await repository.UpdateAsync(updatedChef);
-            await _context.SaveChangesAsync();
-
-            // Act 4: Final Read
-            var afterUpdate = await repository.GetByIdAsync(chef.Id);
-
-            // Assert: Full round-trip consistency
-            Assert.NotNull(afterCreate);
-            Assert.NotNull(afterUpdate);
-            Assert.Equal(chef.Id, afterCreate.Id);
-            Assert.Equal(chef.Id, afterUpdate.Id);
-            Assert.True(afterUpdate.YearsOfExperience > afterCreate.YearsOfExperience);
-        }
-
-        [Property(MaxTest = 50)]
-        public async Task Property_BulkCrudOperations_MaintainIntegrity(int operationCount)
-        {
-            // Arrange
-            var validCount = Math.Min(20, Math.Max(1, operationCount));
-            var repository = new Repository<Chef>(_context);
-
-            // Act & Assert: Multiple creates
-            for (int i = 0; i < validCount; i++)
-            {
-                var chef = new Chef($"Chef_{i}", "Various", yearsOfExperience: i, rating: (decimal)(i % 5));
-                await repository.AddAsync(chef);
-            }
-            await _context.SaveChangesAsync();
-
-            // Assert: All created successfully
-            var all = await repository.GetAllAsync();
-            Assert.True(all.Count >= validCount);
-        }
+        var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+            .UseInMemoryDatabase("RepoCrud_" + Guid.NewGuid())
+            .Options;
+        _context = new ApplicationDbContext(options);
+        await _context.Database.EnsureCreatedAsync();
     }
 
-    /// <summary>
-    /// Helper extension to set ID for testing
-    /// </summary>
-    internal static class ChefTestExtensions
+    public async Task DisposeAsync()
     {
-        public static void SetId(this Chef chef, int id)
+        await _context.DisposeAsync();
+    }
+
+    [Fact]
+    public void Add_Chef_AppearsInQuery()
+    {
+        var repo = new Repository<Chef>(_context);
+        var chef = new Chef { Name = "Ahmad", Title = "Head Chef", Bio = "Expert", Specialty = "Himalayan" };
+
+        repo.Add(chef);
+        _context.SaveChanges();
+
+        var result = repo.Query().ToList();
+        result.Should().ContainSingle(c => c.Name == "Ahmad");
+    }
+
+    [Fact]
+    public void Add_MultipleChefs_AllAppearInQuery()
+    {
+        var repo = new Repository<Chef>(_context);
+        repo.Add(new Chef { Name = "Chef A", Title = "Senior", Bio = "Bio A", Specialty = "Indian" });
+        repo.Add(new Chef { Name = "Chef B", Title = "Junior", Bio = "Bio B", Specialty = "Nepali" });
+        _context.SaveChanges();
+
+        repo.Query().Count().Should().BeGreaterThanOrEqualTo(2);
+    }
+
+    [Fact]
+    public void Query_WithFilter_ReturnsMatchingEntities()
+    {
+        var repo = new Repository<Chef>(_context);
+        repo.Add(new Chef { Name = "Active Chef", Title = "Chef", Bio = "Bio", Specialty = "Indian", IsActive = true });
+        repo.Add(new Chef { Name = "Inactive Chef", Title = "Chef", Bio = "Bio", Specialty = "Indian", IsActive = false });
+        _context.SaveChanges();
+
+        var active = repo.Query().Where(c => c.IsActive).ToList();
+        active.Should().OnlyContain(c => c.IsActive);
+    }
+
+    [Fact]
+    public void Update_Chef_ChangesArePersisted()
+    {
+        var repo = new Repository<Chef>(_context);
+        var chef = new Chef { Name = "Old Name", Title = "Chef", Bio = "Bio", Specialty = "Indian" };
+        repo.Add(chef);
+        _context.SaveChanges();
+
+        chef.Name = "New Name";
+        repo.Update(chef);
+        _context.SaveChanges();
+
+        var result = repo.Query().First(c => c.Id == chef.Id);
+        result.Name.Should().Be("New Name");
+    }
+
+    [Fact]
+    public void Remove_Chef_IsRemovedFromQuery()
+    {
+        var repo = new Repository<Chef>(_context);
+        var chef = new Chef { Name = "To Delete", Title = "Chef", Bio = "Bio", Specialty = "Indian" };
+        repo.Add(chef);
+        _context.SaveChanges();
+
+        repo.Remove(chef);
+        _context.SaveChanges();
+
+        var result = repo.Query().FirstOrDefault(c => c.Id == chef.Id);
+        result.Should().BeNull();
+    }
+
+    [Fact]
+    public void Add_MenuItem_AppearsInQuery()
+    {
+        var repo = new Repository<MenuItem>(_context);
+        var item = new MenuItem { Name = "Momos", Description = "Himalayan dumplings", Price = 8.95m, Category = MenuCategory.Starters };
+        repo.Add(item);
+        _context.SaveChanges();
+
+        var result = repo.Query().First(m => m.Id == item.Id);
+        result.Name.Should().Be("Momos");
+        result.Price.Should().Be(8.95m);
+    }
+
+    [Fact]
+    public void Add_Review_AppearsInQuery()
+    {
+        var repo = new Repository<Review>(_context);
+        var review = new Review { CustomerName = "John Doe", Rating = 5, Comment = "Excellent!", Source = "Google" };
+        repo.Add(review);
+        _context.SaveChanges();
+
+        var result = repo.Query().First(r => r.Id == review.Id);
+        result.CustomerName.Should().Be("John Doe");
+        result.Rating.Should().Be(5);
+    }
+
+    [Fact]
+    public void Add_ContactInquiry_AppearsInQuery()
+    {
+        var repo = new Repository<ContactInquiry>(_context);
+        var inquiry = new ContactInquiry { Name = "Jane", Email = "jane@test.com", Subject = "Booking", Message = "I'd like to book" };
+        repo.Add(inquiry);
+        _context.SaveChanges();
+
+        repo.Query().Should().ContainSingle(c => c.Email == "jane@test.com");
+    }
+
+    [Fact]
+    public void Add_Reservation_AppearsInQuery()
+    {
+        var repo = new Repository<Reservation>(_context);
+        var res = new Reservation
         {
-            typeof(Chef).GetProperty("Id")?.SetValue(chef, id);
+            CustomerName = "Ali Hassan",
+            Email = "ali@test.com",
+            PhoneNumber = "07700000001",
+            ReservationDate = DateOnly.FromDateTime(DateTime.Today.AddDays(1)),
+            ReservationTime = new TimeOnly(19, 0),
+            PartySize = 4
+        };
+        repo.Add(res);
+        _context.SaveChanges();
+
+        repo.Query().Should().ContainSingle(r => r.Email == "ali@test.com");
+    }
+
+    [Fact]
+    public void Add_Order_AppearsInQuery()
+    {
+        var repo = new Repository<Order>(_context);
+        var order = new Order
+        {
+            CustomerName = "Sara Magar",
+            Email = "sara@test.com",
+            PhoneNumber = "07911123456",
+            Type = OrderType.Collection,
+            TotalAmount = 25.00m
+        };
+        repo.Add(order);
+        _context.SaveChanges();
+
+        repo.Query().Should().ContainSingle(o => o.Email == "sara@test.com");
+    }
+
+    [Fact]
+    public void Query_ReturnsIQueryable_SupportingLinqChain()
+    {
+        var repo = new Repository<MenuItem>(_context);
+        repo.Add(new MenuItem { Name = "Dal Bhat", Description = "Lentil rice", Price = 14.95m, Category = MenuCategory.Mains, IsVegetarian = true });
+        repo.Add(new MenuItem { Name = "Lamb Rogan Josh", Description = "Slow braised lamb", Price = 18.95m, Category = MenuCategory.Mains });
+        _context.SaveChanges();
+
+        var vegItems = repo.Query().Where(m => m.IsVegetarian).OrderBy(m => m.Price).ToList();
+        vegItems.Should().OnlyContain(m => m.IsVegetarian);
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(5)]
+    [InlineData(10)]
+    public void Add_MultipleMenuItems_AllPersisted(int count)
+    {
+        var repo = new Repository<MenuItem>(_context);
+        for (int i = 0; i < count; i++)
+        {
+            repo.Add(new MenuItem { Name = $"Item {i}", Description = "Desc", Price = 9.99m + i, Category = MenuCategory.Starters });
         }
+        _context.SaveChanges();
+
+        repo.Query().Count().Should().BeGreaterThanOrEqualTo(count);
     }
 }
