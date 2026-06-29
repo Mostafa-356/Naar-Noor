@@ -13,6 +13,8 @@ import {
   CreateContactResponse,
   CreateOrderRequest,
   CreateOrderResponse,
+  CreateCheckoutSessionRequest,
+  CreateCheckoutSessionResponse,
 } from '../models';
 
 export type {
@@ -25,6 +27,8 @@ export type {
   CreateContactResponse,
   CreateOrderRequest,
   CreateOrderResponse,
+  CreateCheckoutSessionRequest,
+  CreateCheckoutSessionResponse,
 };
 
 @Injectable({ providedIn: 'root' })
@@ -106,6 +110,13 @@ export class ApiService {
   createOrder(data: CreateOrderRequest): Observable<CreateOrderResponse> {
     return this.http.post<CreateOrderResponse>(`${this.baseUrl}/orders`, data).pipe(
       catchError(() => of({ id: 'ORD-' + Math.floor(1000 + Math.random() * 9000) }))
+    );
+  }
+
+  createCheckoutSession(data: CreateCheckoutSessionRequest): Observable<CreateCheckoutSessionResponse> {
+    return this.http.post<CreateCheckoutSessionResponse>(
+      `${this.baseUrl}/payments/create-checkout-session`,
+      data
     );
   }
 }

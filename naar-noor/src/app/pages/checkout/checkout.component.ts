@@ -36,7 +36,7 @@ export class CheckoutComponent implements OnInit {
       customerName:         ['', [Validators.required, Validators.minLength(2)]],
       email:                ['', [Validators.required, Validators.email]],
       phoneNumber:          ['', [Validators.required, Validators.minLength(7)]],
-      type:                 ['pickup', Validators.required], // Use 'pickup' by default to match E2E
+      type:                 ['pickup', Validators.required],
       deliveryAddress:      [''],
       tableReservationName: [''],
       notes:                ['', Validators.maxLength(300)]
@@ -80,6 +80,11 @@ export class CheckoutComponent implements OnInit {
     this.cart.setQuantity(itemId, val);
   }
 
+  /** Builds the absolute URL for Stripe redirect callbacks. */
+  private appUrl(): string {
+    return window.location.origin;
+  }
+
   submit(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -88,15 +93,17 @@ export class CheckoutComponent implements OnInit {
     this.submitting = true;
     const val = this.form.value;
 
-    // Map 'pickup' to 'collection' for the backend API
+    // Map 'pickup' → 'collection' for the backend
     const apiType = val.type === 'pickup' ? 'collection' : val.type;
 
-    this.api.createOrder({
+    const origin = this.appUrl();
+
+    this.api.createCheckoutSession({
       customerName:         val.customerName,
       email:                val.email,
       phoneNumber:          val.phoneNumber,
       notes:                val.notes || undefined,
-      type:                 apiType,
+      type:                 apiType as 'collection' | 'delivery' | 'dine-in',
       deliveryAddress:      val.deliveryAddress  || undefined,
       tableReservationName: val.tableReservationName || undefined,
       items: this.cart.items().map(i => ({
@@ -104,17 +111,21 @@ export class CheckoutComponent implements OnInit {
         menuItemName: i.name,
         unitPrice:    i.price,
         quantity:     i.quantity
-      }))
+      })),
+      successUrl: `${origin}/payment-success`,
+      cancelUrl:  `${origin}/payment-cancelled`
     }).subscribe({
       next: (res) => {
+        // Clear cart immediately — Stripe redirect takes the user off-site
         this.cart.clear();
-        this.router.navigate(['/order-confirmed'], { queryParams: { id: res.id } });
+        // Hard-navigate to Stripe hosted checkout page
+        window.location.href = res.sessionUrl;
       },
       error: (err) => {
         this.submitting = false;
         const msg = err?.error?.errors
           ? Object.values(err.error.errors).flat().join('. ')
-          : 'Something went wrong. Please try again.';
+          : err?.error?.title ?? 'Something went wrong. Please try again.';
         this.toast.error(msg as string);
       }
     });

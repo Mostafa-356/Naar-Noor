@@ -53,6 +53,9 @@ public static class DependencyInjection
         services.AddHttpClient<ISupabaseStorageService, SupabaseStorageService>();
         services.AddHttpClient<ISupabaseRealtimeService, SupabaseRealtimeService>();
 
+        // Stripe Payment Service
+        services.AddSingleton<IStripeService, StripeService>();
+
         var serviceRoleKey = Environment.GetEnvironmentVariable("SUPABASE_SERVICE_ROLE_KEY")
             ?? configuration["Supabase:ServiceRoleKey"]
             ?? "";

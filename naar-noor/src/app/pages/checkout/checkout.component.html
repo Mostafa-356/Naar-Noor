@@ -192,7 +192,8 @@
                   ? 'bg-neutral-800 text-neutral-500 cursor-not-allowed'
                   : 'bg-white text-[#0a0a0a] hover:bg-[#C65A1E] hover:text-white hover:shadow-[0_0_28px_rgba(198,90,30,0.4)]'">
           <iconify-icon *ngIf="submitting" icon="solar:spinner-line-duotone" width="18" class="animate-spin"></iconify-icon>
-          <span>{{ submitting ? 'Placing order…' : 'Place Order' }}</span>
+          <iconify-icon *ngIf="!submitting" icon="solar:lock-bold" width="16"></iconify-icon>
+          <span>{{ submitting ? 'Redirecting to payment…' : 'Pay with Stripe' }}</span>
         </button>
 
       </div>

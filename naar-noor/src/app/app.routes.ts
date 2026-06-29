@@ -40,6 +40,14 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    path: 'payment-success',
+    loadComponent: () => import('./pages/payment-success/payment-success.component').then(m => m.PaymentSuccessComponent)
+  },
+  {
+    path: 'payment-cancelled',
+    loadComponent: () => import('./pages/payment-cancelled/payment-cancelled.component').then(m => m.PaymentCancelledComponent)
+  },
+  {
     path: '**',
     loadComponent: () => import('./pages/not-found/not-found.component').then(m => m.NotFoundComponent)
   }
