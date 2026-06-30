@@ -38,9 +38,24 @@ declare global {
        * email address.  No-op when DATABASE_URL is not configured.
        */
       cleanupAfterTest(email?: string): Chainable<void>;
+
+      /**
+       * Assert that a menu item with the given name exists in the live database.
+       *
+       * Uses a parameterised SQL query against the MenuItems table so there is
+       * zero SQL-injection risk.  Silently skips (with a cy.log) when
+       * DATABASE_URL is not configured or when running in stub mode.
+       *
+       * Example:
+       *   cy.assertMenuItemSeeded('Lamb Rogan Josh');
+       *   cy.assertMenuItemSeeded('Dal Bhat');
+       */
+      assertMenuItemSeeded(name: string): Chainable<void>;
     }
   }
 }
+
+// ── visitAuthenticated ────────────────────────────────────────────────────────
 
 Cypress.Commands.add('visitAuthenticated', (url: string, email = 'demo@example.com') => {
   const session = {
@@ -56,6 +71,8 @@ Cypress.Commands.add('visitAuthenticated', (url: string, email = 'demo@example.c
     },
   });
 });
+
+// ── seedMenu / seedChefs ──────────────────────────────────────────────────────
 
 Cypress.Commands.add('seedMenu', () => {
   cy.fixture('menu.json').then((items) => {
@@ -83,9 +100,33 @@ Cypress.Commands.add('seedChefs', () => {
   });
 });
 
+// ── cleanupAfterTest ──────────────────────────────────────────────────────────
+
 Cypress.Commands.add('cleanupAfterTest', (email = 'test@example.com') => {
   cy.task('db:clean:reservations', email, { log: false });
   cy.task('db:clean:orders',       email, { log: false });
+});
+
+// ── assertMenuItemSeeded ──────────────────────────────────────────────────────
+
+Cypress.Commands.add('assertMenuItemSeeded', (name: string) => {
+  // Skip entirely when running in stub mode — no DB is available to query.
+  if (!Cypress.env('DB_AVAILABLE')) {
+    cy.log(`assertMenuItemSeeded("${name}") — skipped (stub mode, DATABASE_URL not set)`);
+    return;
+  }
+
+  cy.task('db:find:menuItem', name, { log: false }).then((result) => {
+    const r = result as { skipped?: boolean; found?: boolean; count?: number };
+
+    if (r.skipped) {
+      // Task itself signalled it couldn't connect — treat as a soft skip.
+      cy.log(`assertMenuItemSeeded("${name}") — skipped (task: no DB connection)`);
+    } else {
+      // Hard assertion: the row must exist.
+      expect(r.found, `MenuItems should contain a row with Name = "${name}"`).to.be.true;
+    }
+  });
 });
 
 export {};

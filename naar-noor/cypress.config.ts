@@ -111,6 +111,22 @@ export default defineConfig({
             return { count: parseInt(res.rows[0].n as string, 10) };
           });
         },
+
+        /**
+         * Safely check whether a menu item with the given name is in the DB.
+         * Uses a parameterised query — no SQL-injection risk.
+         * Returns { found: boolean, count: number } or { skipped: true }.
+         */
+        async 'db:find:menuItem'(name: string) {
+          return withDb(async (client) => {
+            const res = await client.query(
+              `SELECT COUNT(*) AS n FROM "MenuItems" WHERE "Name" = $1`,
+              [name]
+            );
+            const count = parseInt(res.rows[0].n as string, 10);
+            return { found: count > 0, count };
+          });
+        },
       });
     },
   },

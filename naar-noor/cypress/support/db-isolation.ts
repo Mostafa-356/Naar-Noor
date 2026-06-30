@@ -4,7 +4,8 @@
  * Dual-mode API helper for Naar & Noor E2E tests.
  *
  * MODE A — DATABASE_URL is set in Replit Secrets
- *   seedReferenceData() seeds the live database from fixtures.
+ *   seedReferenceData() seeds the live database from fixtures, then verifies
+ *   every fixture item is present with cy.assertMenuItemSeeded().
  *   Cypress.env('DB_AVAILABLE') is set to true.
  *   interceptXxx() functions create PASSTHROUGH intercepts — they alias the
  *   request so cy.wait('@alias') still works, but the real API responds.
@@ -13,30 +14,51 @@
  * MODE B — DATABASE_URL is not set
  *   cy.task() returns { skipped: true }.
  *   Cypress.env('DB_AVAILABLE') is set to false.
- *   interceptXxx() functions inject a fixture body instead — every spec
- *   runs entirely without a live server.
+ *   interceptXxx() functions inject a fixture body instead.
+ *   cy.assertMenuItemSeeded() logs a skip — no assertion is made.
  *
  * ALWAYS STUBBED (never hits real external services):
  *   interceptPayment() — always returns fixture/payment-session.json
  *   interceptAuth()    — always returns fixture/auth-login.json or 401
  */
 
+// Names of every item in cypress/fixtures/menu.json.
+// Used after seeding to give DB-level proof that each row was written.
+const FIXTURE_MENU_NAMES = [
+  'Lamb Rogan Josh',
+  'Chicken Momos',
+  'Dal Bhat',
+  'Mango Lassi',
+  'Gulab Jamun',
+  'Sekuwa',
+] as const;
+
 // ─── Reference data seeding ──────────────────────────────────────────────────
 
 /**
  * Call once in the global before() hook (support/e2e.ts).
- * Seeds menu items and chefs into the live DB, then records the outcome
- * in Cypress.env('DB_AVAILABLE') for all subsequent interceptXxx() calls.
+ *
+ * 1. Seeds menu items and chefs from fixtures into the live DB.
+ * 2. Records outcome in Cypress.env('DB_AVAILABLE').
+ * 3. When DB is available, runs cy.assertMenuItemSeeded() for every fixture
+ *    item — giving DB-level proof that each row was written, on top of the
+ *    UI-level assertions in the individual test files.
  */
 export function seedReferenceData(): void {
   cy.fixture('menu.json').then((items: unknown[]) => {
     cy.task('db:seed:menu', items, { log: false }).then((result) => {
       const r = result as { skipped?: boolean; seeded?: number };
       Cypress.env('DB_AVAILABLE', !r.skipped);
+
       if (r.skipped) {
         cy.log('ℹ️  DB seeding skipped — set DATABASE_URL to enable live-API mode');
       } else {
-        cy.log(`✅ DB seeded (${r.seeded} menu items) — tests will use real API`);
+        cy.log(`✅ DB seeded (${r.seeded} menu items) — verifying each row…`);
+
+        // DB-level assertion: every fixture item must now be in the table.
+        FIXTURE_MENU_NAMES.forEach((name) => {
+          cy.assertMenuItemSeeded(name);
+        });
       }
     });
   });
