@@ -131,6 +131,25 @@ select.nn-input {
   box-shadow: 0 0 0 3px rgba(198, 90, 30, 0.12);
 }
 
+/* Validation error state — works on nn-input and nn-field */
+.nn-field--error {
+  border-color: rgba(239, 68, 68, 0.6) !important;
+}
+.nn-field--error:focus {
+  border-color: rgb(239, 68, 68) !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12) !important;
+}
+
+/* Custom chevron for select.nn-field */
+select.nn-field {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 7l5 5 5-5' stroke='%23737373' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1.125rem;
+  padding-right: 2.5rem;
+  cursor: pointer;
+}
+
 /* ── Core keyframes ─────────────────────────────────── */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
