@@ -4,11 +4,8 @@ import { AboutComponent } from '../../sections/about/about.component';
 import { CategoryComponent } from '../../sections/category/category.component';
 import { MenuComponent } from '../../sections/menu/menu.component';
 import { CinematicBannerComponent } from '../../sections/cinematic-banner/cinematic-banner.component';
-import { ReservationComponent } from '../../sections/reservation/reservation.component';
 import { ChefsComponent } from '../../sections/chefs/chefs.component';
 import { ReviewsComponent } from '../../sections/reviews/reviews.component';
-import { BlogComponent } from '../../sections/blog/blog.component';
-import { LocationsComponent } from '../../sections/locations/locations.component';
 import { SeoService } from '../../services/seo.service';
 
 @Component({
@@ -20,11 +17,8 @@ import { SeoService } from '../../services/seo.service';
     CategoryComponent,
     MenuComponent,
     CinematicBannerComponent,
-    ReservationComponent,
     ChefsComponent,
     ReviewsComponent,
-    BlogComponent,
-    LocationsComponent
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
