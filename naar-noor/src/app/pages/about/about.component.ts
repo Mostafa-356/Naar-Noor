@@ -13,7 +13,7 @@ import { RevealDirective } from '../../directives/scroll-reveal.directive';
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   template: `
     <!-- Page hero -->
-    <div class="pt-32 pb-4 px-6 bg-[#0a0a0a]">
+    <div class="pt-32 pb-10 px-6 bg-[#0a0a0a]">
       <div class="max-w-3xl mx-auto text-center space-y-4">
         <span class="text-[#C65A1E] text-xs font-medium tracking-[0.2em] uppercase">Our Story</span>
         <h1 class="font-['Forum'] text-4xl sm:text-5xl text-white tracking-tight">About Naar &amp; Noor</h1>
@@ -25,7 +25,7 @@ import { RevealDirective } from '../../directives/scroll-reveal.directive';
     </div>
 
     <!-- Full about section (story + features) -->
-    <app-about></app-about>
+    <app-about [standalone]="true"></app-about>
 
     <!-- Values strip -->
     <section class="py-16 px-6 bg-[#0d0d0d]">

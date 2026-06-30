@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -10,6 +10,7 @@ import { SeoService } from '../../services/seo.service';
   selector: 'app-menu-page',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   template: `
     <div class="min-h-screen pt-28 pb-16 px-6 bg-[#0a0a0a]">
       <div class="max-w-7xl mx-auto">
@@ -20,10 +21,23 @@ import { SeoService } from '../../services/seo.service';
           <span class="text-neutral-300">Menu</span>
         </nav>
 
+        <!-- Mobile filter toggle -->
+        <div class="lg:hidden flex items-center justify-between mb-4">
+          <span class="text-sm text-neutral-400">
+            {{ filteredItems.length }} item{{ filteredItems.length === 1 ? '' : 's' }}
+          </span>
+          <button (click)="filtersOpen = !filtersOpen"
+                  class="flex items-center gap-2 px-4 py-2 text-sm text-white border border-white/15 rounded-xl hover:bg-white/5 transition-all">
+            <iconify-icon [icon]="filtersOpen ? 'solar:close-linear' : 'solar:filter-linear'" width="16"></iconify-icon>
+            {{ filtersOpen ? 'Close' : 'Filters' }}
+          </button>
+        </div>
+
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
           <!-- Filters Sidebar -->
-          <div class="lg:col-span-1 space-y-6 p-6 rounded-2xl bg-[#0d0d0d] border border-white/5 h-fit">
-            <h2 class="font-['Forum'] text-xl text-white mb-4">Filters</h2>
+          <div [class.hidden]="!filtersOpen"
+               class="lg:block lg:col-span-1 space-y-6 p-6 rounded-2xl bg-[#0d0d0d] border border-white/5 h-fit">
+            <h2 class="font-['Forum'] text-xl text-white mb-4 hidden lg:block">Filters</h2>
 
             <!-- Category -->
             <div class="space-y-2">
@@ -194,6 +208,7 @@ export class MenuPageComponent implements OnInit {
   maxPrice: number | null = null;
 
   loading = true;
+  filtersOpen = false;
 
   ngOnInit(): void {
     this.seo.set({ title: 'Menu' });

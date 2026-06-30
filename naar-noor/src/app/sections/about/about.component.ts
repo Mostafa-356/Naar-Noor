@@ -1,4 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, Input, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RevealDirective } from '../../directives/scroll-reveal.directive';
 
@@ -11,6 +11,7 @@ import { RevealDirective } from '../../directives/scroll-reveal.directive';
   styleUrls: ['./about.component.css']
 })
 export class AboutComponent {
+  @Input() standalone = false;
   features = [
     { icon: 'solar:flame-linear', title: 'Flame-Grilled', description: 'Specialties cooked over open flames for deep flavor.' },
     { icon: 'solar:leaf-linear', title: 'Fresh Ingredients', description: 'Locally sourced produce mixed with Himalayan herbs.' },
