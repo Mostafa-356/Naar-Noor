@@ -1,20 +1,11 @@
 /// <reference types="cypress" />
+import './commands';
 
-// Cypress support file
-// This runs before each test file
-
-// Suppress TypeScript errors for cy commands
-declare global {
-  namespace Cypress {
-    interface Chainable {
-      // Add custom commands here if needed
-    }
-  }
-}
-
-// Add any global configuration or hooks
+// Clear localStorage before each test to prevent session bleed-through.
+// Individual tests that need auth call cy.visitAuthenticated() which sets
+// nn_session via onBeforeLoad — AFTER this clear.
 beforeEach(() => {
-  // Add any setup that should run before each test
+  cy.clearLocalStorage();
 });
 
 export {};

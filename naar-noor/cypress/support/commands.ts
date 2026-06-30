@@ -1,0 +1,90 @@
+// ──────────────────────────────────────────────────────────────────────────────
+// Custom Cypress commands for Naar & Noor E2E tests
+// ──────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Build a minimal fake JWT that auth.service.ts can decode.
+ * The service only reads the base64 payload — it never verifies the signature.
+ */
+function makeFakeJwt(email: string, userId = 'test-user-id'): string {
+  const header  = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
+  const payload = btoa(JSON.stringify({ sub: userId, email, iat: Math.floor(Date.now() / 1000) }));
+  return `${header}.${payload}.fake-e2e-signature`;
+}
+
+declare global {
+  namespace Cypress {
+    interface Chainable {
+      /**
+       * Visit a URL with a pre-seeded auth session.
+       * The session is injected via `onBeforeLoad` so Angular reads it during initialisation.
+       */
+      visitAuthenticated(url: string, email?: string): Chainable<void>;
+
+      /**
+       * Seed menu items into the live database via cy.task().
+       * No-op (with a log) when DATABASE_URL is not configured.
+       */
+      seedMenu(): Chainable<void>;
+
+      /**
+       * Seed chefs into the live database via cy.task().
+       * No-op (with a log) when DATABASE_URL is not configured.
+       */
+      seedChefs(): Chainable<void>;
+
+      /**
+       * Delete reservations and orders created during E2E tests for a given email.
+       * No-op when DATABASE_URL is not configured.
+       */
+      cleanTestData(email?: string): Chainable<void>;
+    }
+  }
+}
+
+Cypress.Commands.add('visitAuthenticated', (url: string, email = 'demo@example.com') => {
+  const session = {
+    accessToken: makeFakeJwt(email),
+    userId: 'test-user-id',
+    email,
+  };
+  cy.visit(url, {
+    onBeforeLoad(win) {
+      // Set before Angular boots so loadSession() in auth.service.ts finds it.
+      win.localStorage.setItem('nn_session', JSON.stringify(session));
+    },
+  });
+});
+
+Cypress.Commands.add('seedMenu', () => {
+  cy.fixture('menu.json').then((items) => {
+    cy.task('db:seed:menu', items, { log: false }).then((result) => {
+      const r = result as { skipped?: boolean; seeded?: number };
+      if (r.skipped) {
+        cy.log('db:seed:menu skipped — DATABASE_URL not set');
+      } else {
+        cy.log(`Seeded ${r.seeded} menu items into the database`);
+      }
+    });
+  });
+});
+
+Cypress.Commands.add('seedChefs', () => {
+  cy.fixture('chefs.json').then((chefs) => {
+    cy.task('db:seed:chefs', chefs, { log: false }).then((result) => {
+      const r = result as { skipped?: boolean; seeded?: number };
+      if (r.skipped) {
+        cy.log('db:seed:chefs skipped — DATABASE_URL not set');
+      } else {
+        cy.log(`Seeded ${r.seeded} chefs into the database`);
+      }
+    });
+  });
+});
+
+Cypress.Commands.add('cleanTestData', (email = 'test@example.com') => {
+  cy.task('db:clean:reservations', email, { log: false });
+  cy.task('db:clean:orders',       email, { log: false });
+});
+
+export {};
