@@ -22,6 +22,10 @@ args = "Backend API"
 task = "workflow.run"
 args = "Start application"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "CI Check"
+
 [[workflows.workflow]]
 name = "Backend API"
 author = "agent"
@@ -45,6 +49,17 @@ outputType = "webview"
 task = "shell.exec"
 args = "cd naar-noor && node node_modules/@angular/cli/bin/ng.js serve --port 5000 --host 0.0.0.0"
 waitForPort = 5000
+
+[[workflows.workflow]]
+name = "CI Check"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "make check"
+
+[workflows.workflow.metadata]
+outputType = "console"
 
 [[ports]]
 localPort = 5000

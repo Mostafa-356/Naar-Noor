@@ -57,7 +57,7 @@ describe('ToastComponent', () => {
   });
 
   it('trackById() returns the toast id', () => {
-    const toast = { id: 42, message: 'Hello', type: 'info' as const, duration: 4000 };
+    const toast = { id: 42, title: '', message: 'Hello', type: 'info' as const };
     expect(component.trackById(0, toast)).toBe(42);
   });
 

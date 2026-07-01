@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">92.53% </span>
+                <span class="strong">90.41% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>62/67</span>
+                <span class='fraction'>66/73</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">89.47% </span>
+                <span class="strong">81.81% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>17/19</span>
+                <span class='fraction'>18/22</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">91.8% </span>
+                <span class="strong">89.55% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>56/61</span>
+                <span class='fraction'>60/67</span>
             </div>
         
             
@@ -528,7 +528,15 @@
 <a name='L463'></a><a href='#L463'>463</a>
 <a name='L464'></a><a href='#L464'>464</a>
 <a name='L465'></a><a href='#L465'>465</a>
-<a name='L466'></a><a href='#L466'>466</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L466'></a><a href='#L466'>466</a>
+<a name='L467'></a><a href='#L467'>467</a>
+<a name='L468'></a><a href='#L468'>468</a>
+<a name='L469'></a><a href='#L469'>469</a>
+<a name='L470'></a><a href='#L470'>470</a>
+<a name='L471'></a><a href='#L471'>471</a>
+<a name='L472'></a><a href='#L472'>472</a>
+<a name='L473'></a><a href='#L473'>473</a>
+<a name='L474'></a><a href='#L474'>474</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -867,22 +875,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">24x</span>
 <span class="cline-any cline-yes">24x</span>
 <span class="cline-any cline-yes">24x</span>
 <span class="cline-any cline-yes">24x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">24x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">24x</span>
-<span class="cline-any cline-yes">24x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">24x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">24x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -891,6 +895,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">24x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">24x</span>
@@ -982,19 +996,21 @@
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import {
-  Component, CUSTOM_ELEMENTS_SCHEMA, inject, signal, OnInit, OnDestroy
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, CUSTOM_ELEMENTS_SCHEMA, inject, signal, OnInit, OnDestroy
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
@@ -1011,6 +1027,7 @@ import { DrawerStep } from '../../models';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
     trigger('backdrop', [
       transition(':enter', [style({ opacity: 0 }), animate('200ms ease', style({ opacity: 1 }))]),
@@ -1100,7 +1117,7 @@ import { DrawerStep } from '../../models';
 &nbsp;
           &lt;!-- Items list --&gt;
           &lt;div *ngIf="!cart.isEmpty()" @stepIn class="flex-1 overflow-y-auto px-6 py-4 space-y-3"&gt;
-            &lt;div *ngFor="let item of cart.items()"
+            &lt;div *ngFor="let item of cart.items(); trackBy: trackByCartItem"
                  class="flex items-start gap-4 p-4 bg-[#111] rounded-xl border border-white/5"&gt;
               &lt;div class="flex-1 min-w-0"&gt;
                 &lt;p class="text-sm font-medium text-white leading-tight"&gt;{{ item.name }}&lt;/p&gt;
@@ -1160,7 +1177,7 @@ import { DrawerStep } from '../../models';
             &lt;div&gt;
               &lt;p class="text-xs text-neutral-500 tracking-[0.15em] uppercase mb-3"&gt;How would you like your order?&lt;/p&gt;
               &lt;div class="grid grid-cols-3 gap-2"&gt;
-                &lt;label *ngFor="let t of orderTypes"
+                &lt;label *ngFor="let t of orderTypes; trackBy: trackByType"
                        class="flex flex-col items-center gap-1.5 p-3 rounded-xl border cursor-pointer transition-all duration-200"
                        [ngClass]="orderType === t.value
                          ? 'border-[#C65A1E] bg-[#C65A1E]/8 shadow-[0_0_12px_rgba(198,90,30,0.12)]'
@@ -1306,7 +1323,7 @@ import { DrawerStep } from '../../models';
             &lt;!-- What happens next --&gt;
             &lt;div class="mt-8 w-full bg-[#111] border border-white/5 rounded-2xl p-5 text-left space-y-4"&gt;
               &lt;h4 class="text-xs font-medium text-neutral-500 uppercase tracking-widest mb-1"&gt;What happens next&lt;/h4&gt;
-              &lt;div *ngFor="let s of nextSteps; let i = index" class="flex items-start gap-3"&gt;
+              &lt;div *ngFor="let s of nextSteps; let i = index; trackBy: trackByIndex" class="flex items-start gap-3"&gt;
                 &lt;div class="w-6 h-6 rounded-full bg-[#C65A1E]/10 border border-[#C65A1E]/20 flex items-center justify-center shrink-0 mt-0.5"&gt;
                   &lt;span class="text-[10px] font-bold text-[#C65A1E]"&gt;{{ i + 1 }}&lt;/span&gt;
                 &lt;/div&gt;
@@ -1333,10 +1350,11 @@ import { DrawerStep } from '../../models';
   `
 })
 export class CartDrawerComponent implements OnInit, OnDestroy {
-  readonly cart    = inject(CartService);
+  readonly cart          = inject(CartService);
   private readonly fb    = inject(FormBuilder);
   private readonly api   = inject(ApiService);
   private readonly toast = inject(ToastService);
+  private readonly cdr   = inject(ChangeDetectorRef);
 &nbsp;
   step = signal&lt;DrawerStep&gt;(1);
   form!: FormGroup;
@@ -1356,6 +1374,10 @@ export class CartDrawerComponent implements OnInit, OnDestroy {
     { title: 'You get a call',        desc: "We'll ring the number you provided to confirm and arrange payment." },
     { title: 'Your food is prepared', desc: 'Freshly made with Himalayan care, ready for you.' }
   ];
+&nbsp;
+  trackByCartItem(_index: number, item: { menuItemId: string }): string { return item.menuItemId; }
+<span class="fstat-no" title="function not covered" >  trackByType(</span>_index: number, t: { value: string }): string { <span class="cstat-no" title="statement not covered" >return t.value; </span>}
+<span class="fstat-no" title="function not covered" >  trackByIndex(</span>_index: number): number { <span class="cstat-no" title="statement not covered" >return _index; </span>}
 &nbsp;
   ngOnInit(): void {
     this.buildForm();
@@ -1447,6 +1469,7 @@ export class CartDrawerComponent implements OnInit, OnDestroy {
         this.confirmedShortId = res.id ? res.id.split('-')[0].toUpperCase() : <span class="branch-1 cbranch-no" title="branch not covered" >'';</span>
         this.cart.clear();
         this.step.set(3);
+        this.cdr.markForCheck();
       },
       error: (err) =&gt; {
         this.submitting = false;
@@ -1454,6 +1477,7 @@ export class CartDrawerComponent implements OnInit, OnDestroy {
           ? Object.values(err.error.errors).flat().join('. ')
           : <span class="branch-1 cbranch-no" title="branch not covered" >'Something went wrong. Please try again.';</span>
         this.toast.error(msg as string);
+        this.cdr.markForCheck();
       }
     });
   }
@@ -1465,7 +1489,7 @@ export class CartDrawerComponent implements OnInit, OnDestroy {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-06-30T21:51:57.300Z
+                at 2026-07-01T06:24:05.668Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
