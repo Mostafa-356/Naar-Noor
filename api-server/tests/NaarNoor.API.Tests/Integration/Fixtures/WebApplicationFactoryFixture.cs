@@ -65,6 +65,13 @@ public class WebApplicationFactoryFixture : WebApplicationFactory<Program>, IAsy
     /// </summary>
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
+        builder.UseSetting("AllowedHosts", "*");
+        builder.UseSetting("Jwt:SecretKey", "test-jwt-secret-key-for-integration-tests-minimum-32-chars");
+        builder.UseSetting("Jwt:Issuer", "NaarNoor");
+        builder.UseSetting("Jwt:Audience", "NaarNoorApp");
+        builder.UseSetting("Supabase:Url", "https://test.supabase.co");
+        builder.UseSetting("Supabase:AnonKey", "test-anon-key");
+
         builder.ConfigureServices(services =>
         {
             // Remove the production DbContext registration

@@ -13,7 +13,8 @@ public class DependencyInjectionTests
     private static IConfiguration BuildConfig(
         string? connectionString = null,
         string? supabaseUrl = null,
-        string? supabaseAnonKey = null)
+        string? supabaseAnonKey = null,
+        string? jwtSecretKey = "test-jwt-secret-key-for-di-tests-min-32-chars")
     {
         var dict = new Dictionary<string, string?>();
         if (connectionString is not null)
@@ -22,6 +23,8 @@ public class DependencyInjectionTests
             dict["Supabase:Url"] = supabaseUrl;
         if (supabaseAnonKey is not null)
             dict["Supabase:AnonKey"] = supabaseAnonKey;
+        if (jwtSecretKey is not null)
+            dict["Jwt:SecretKey"] = jwtSecretKey;
 
         return new ConfigurationBuilder()
             .AddInMemoryCollection(dict)

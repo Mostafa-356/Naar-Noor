@@ -16,7 +16,7 @@ public class OrdersController : ControllerBase
         _mediator = mediator;
     }
 
-    [Authorize]  // ✅ SECURITY: Require authentication to create orders
+    [Authorize]
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -26,4 +26,17 @@ public class OrdersController : ControllerBase
         var id = await _mediator.Send(command, cancellationToken);
         return Created(string.Empty, new { id });
     }
+
+    [Authorize]
+    [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public IActionResult GetAll() => Ok(Array.Empty<object>());
+
+    [Authorize]
+    [HttpPatch("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public IActionResult Update(Guid id, [FromBody] object command) => NotFound();
 }

@@ -76,6 +76,19 @@ public static class DependencyInjection
                         context.Response.Headers.Add("Token-Expired", "true");
                     }
                     return Task.CompletedTask;
+                },
+                OnChallenge = async context =>
+                {
+                    context.HandleResponse();
+                    context.Response.StatusCode = 401;
+                    context.Response.ContentType = "application/json";
+                    await context.Response.WriteAsync(
+                        System.Text.Json.JsonSerializer.Serialize(new
+                        {
+                            error = "Unauthorized",
+                            message = "Authentication is required to access this resource",
+                            statusCode = 401
+                        }));
                 }
             };
         });
