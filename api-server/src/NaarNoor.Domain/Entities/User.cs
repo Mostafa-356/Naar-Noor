@@ -7,15 +7,15 @@ namespace NaarNoor.Domain.Entities;
 /// </summary>
 public class User : BaseEntity
 {
-    public string Id { get; set; } = Guid.NewGuid().ToString();
+    public new string Id { get; set; } = Guid.NewGuid().ToString();
     public string Email { get; set; } = string.Empty;
     public string FullName { get; set; } = string.Empty;
     public string PasswordHash { get; set; } = string.Empty;
     public string[] Roles { get; set; } = Array.Empty<string>();
     public bool IsActive { get; set; } = true;
     public DateTime? LastLogin { get; set; }
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+    public new DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public new DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
     // Navigation properties
     public ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();

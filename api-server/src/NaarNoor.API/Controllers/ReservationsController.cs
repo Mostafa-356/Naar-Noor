@@ -17,7 +17,7 @@ public class ReservationsController : ControllerBase
         _mediator = mediator;
     }
 
-    [Authorize]  // ✅ SECURITY: Require authentication to create reservations
+    [Authorize]
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -28,7 +28,7 @@ public class ReservationsController : ControllerBase
         return Created(string.Empty, new { id });
     }
 
-    [Authorize]  // ✅ SECURITY: Require authentication to view reservations
+    [Authorize]
     [HttpGet]
     [ProducesResponseType(typeof(List<ReservationDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -37,4 +37,25 @@ public class ReservationsController : ControllerBase
         var result = await _mediator.Send(new GetReservationsQuery(page, pageSize), cancellationToken);
         return Ok(result);
     }
+
+    [Authorize]
+    [HttpGet("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public IActionResult GetById(Guid id) => NotFound();
+
+    [Authorize]
+    [HttpPut("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public IActionResult Update(Guid id, [FromBody] object command) => NotFound();
+
+    [Authorize]
+    [HttpDelete("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public IActionResult Delete(Guid id) => NotFound();
 }
