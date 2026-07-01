@@ -8,6 +8,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
+    public DbSet<User> Users => Set<User>();
     public DbSet<Reservation> Reservations => Set<Reservation>();
     public DbSet<MenuItem> MenuItems => Set<MenuItem>();
     public DbSet<Chef> Chefs => Set<Chef>();

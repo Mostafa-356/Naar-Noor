@@ -43,7 +43,7 @@
 **Completion Summary**:
 ✅ appsettings.Production.json created
 ✅ .env.example updated with all required variables
-✅ Connection string format: `Host=db.uyzocpvytoljigmcpafn.supabase.co;Port=5432;...`
+✅ Connection string format: `Host=db.YOUR_PROJECT.supabase.co;Port=5432;...`
 ✅ Service Role Key properly configured
 
 ---
@@ -266,7 +266,7 @@ _logger.LogError("Database query failed: {QueryTime}ms", queryTime);
 **Required Actions**:
 
 1. **Execute RLS SQL Script** in Supabase:
-   - Open: https://supabase.com/dashboard/project/uyzocpvytoljigmcpafn/sql
+   - Open: https://supabase.com/dashboard/project/YOUR_PROJECT_ID/sql
    - Run: `sql/2_1_rls_implementation.sql`
    - Verify: 13 policies created
 
@@ -307,7 +307,7 @@ _logger.LogError("Database query failed: {QueryTime}ms", queryTime);
 public class IntegrationTestFixture : IAsyncLifetime
 {
     private readonly string _connectionString = 
-        "Host=db.uyzocpvytoljigmcpafn.supabase.co;Port=5432;...";
+        "Host=db.YOUR_PROJECT.supabase.co;Port=5432;...";
     
     public ApplicationDbContext DbContext { get; private set; }
     
@@ -831,10 +831,10 @@ git grep -i "password\|token\|secret" -- publish/ || echo "✓ Clean"
 3. **Set Environment Variables in RunASP Dashboard**:
 ```
 ASPNETCORE_ENVIRONMENT=Production
-POSTGRESQL_CONNECTION_STRING=Host=db.uyzocpvytoljigmcpafn.supabase.co;Port=5432;Database=postgres;User Id=postgres;Password=YOUR_PASSWORD
-Supabase__Url=https://uyzocpvytoljigmcpafn.supabase.co
-Supabase__AnonKey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV5em9jcHZ5dG9samlnbWNwYWZuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI1OTc0MzYsImV4cCI6MjA5ODE3MzQzNn0.Atyx6bnxSHNti8OAEim7qHwXbLJftU-1BxaNVXsQc3M
-Supabase__ServiceRoleKey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV5em9jcHZ5dG9samlnbWNwYWZuIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MjU5NzQzNiwiZXhwIjoyMDk4MTczNDM2fQ.GizldlWZOlgM8YU4HtjzJxtHxz-g0ML3vEZCuWHF5Pg
+POSTGRESQL_CONNECTION_STRING=Host=db.YOUR_PROJECT.supabase.co;Port=5432;Database=postgres;User Id=postgres;Password=YOUR_PASSWORD
+Supabase__Url=https://YOUR_PROJECT.supabase.co
+Supabase__AnonKey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+Supabase__ServiceRoleKey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 API_CORS_ORIGINS=https://naar-noor.vercel.app
 ENABLE_SWAGGER=false
 ```
@@ -877,8 +877,8 @@ npm run build
 3. **Set Environment Variables in Vercel**:
 ```
 VITE_API_BASE_URL=https://naar-noor.runasp.net/api
-VITE_SUPABASE_URL=https://uyzocpvytoljigmcpafn.supabase.co
-VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV5em9jcHZ5dG9samlnbWNwYWZuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI1OTc0MzYsImV4cCI6MjA5ODE3MzQzNn0.Atyx6bnxSHNti8OAEim7qHwXbLJftU-1BxaNVXsQc3M
+VITE_SUPABASE_URL=https://YOUR_PROJECT.supabase.co
+VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
 
 4. **Verify**:

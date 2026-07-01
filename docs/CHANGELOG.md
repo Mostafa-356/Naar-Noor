@@ -240,7 +240,7 @@ We follow [Semantic Versioning](https://semver.org/):
 
 ## Contributing
 
-See [CONTRIBUTING.md](docs/CONTRIBUTING.md) for information on how to contribute to this changelog and the project.
+See [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) for information on how to contribute to this changelog and the project.
 
 ## Links
 

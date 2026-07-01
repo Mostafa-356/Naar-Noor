@@ -17,35 +17,38 @@ Complete database schema and management guide for **Naar & Noor**.
 
 ### Connection String
 
-Update in `appsettings.json`:
+**Never commit real database credentials!** Use environment variables instead.
 
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Server=db54355.public.databaseasp.net; Database=db54355; User Id=db54355; Password=eW!62%tA=bT7; Encrypt=True; TrustServerCertificate=True; MultipleActiveResultSets=True;"
+    "DefaultConnection": ""
   }
 }
+```
+
+**Configure via environment variables:**
+
+```bash
+# PostgreSQL (Supabase)
+export PGHOST=your-host.supabase.co
+export PGUSER=postgres
+export PGPASSWORD=your-password
+export PGDATABASE=postgres
+
+# Or SQL Server (if using local dev)
+export SQLSERVER_CONNECTION="Server=localhost;Database=NaarNoor;Trusted_Connection=true;"
 ```
 
 ### Environment-Specific Configuration
 
-**Development:**
-```json
-{
-  "ConnectionStrings": {
-    "DefaultConnection": "Server=localhost;Database=NaarNoor;Trusted_Connection=true;"
-  }
-}
-```
+**Development (local with environment variables):**
+- Uses PGHOST, PGUSER, PGPASSWORD env vars
+- Falls back to connection string if explicit
 
 **Production:**
-```json
-{
-  "ConnectionStrings": {
-    "DefaultConnection": "Server=db54355.public.databaseasp.net;Database=db54355;User Id=db54355;Password=***;"
-  }
-}
-```
+- MUST use environment variables injected by deployment pipeline
+- Never hardcode production credentials
 
 ---
 
@@ -376,36 +379,23 @@ var reservations = await _context.Reservations
 ### Backup Database
 
 ```sql
-BACKUP DATABASE db54355
-TO DISK = 'C:\Backups\NaarNoor_Backup.bak'
-WITH FORMAT, COMPRESSION;
+-- PostgreSQL / Supabase
+pg_dump -h your-host.supabase.co -U postgres -d postgres > backup.sql
+
+-- Or use provider's backup features
 ```
 
 ### Restore Database
 
 ```sql
-RESTORE DATABASE db54355
-FROM DISK = 'C:\Backups\NaarNoor_Backup.bak'
-WITH REPLACE;
+psql -h your-host.supabase.co -U postgres -d postgres < backup.sql
 ```
 
-### Automated Backup Script
+### Automated Backup
 
-```sql
--- Create backup job (SQL Server Agent)
-EXEC sp_add_job @job_name = 'NaarNoor_Daily_Backup';
-
-EXEC sp_add_jobstep
-    @job_name = 'NaarNoor_Daily_Backup',
-    @step_name = 'Backup Database',
-    @command = 'BACKUP DATABASE db54355 TO DISK = ''C:\Backups\NaarNoor_$(ESCAPE_SQUOTE(DATE)).bak''';
-
-EXEC sp_add_schedule
-    @schedule_name = 'Daily at 2 AM',
-    @freq_type = 4,
-    @freq_interval = 1,
-    @active_start_time = 020000;
-```
+Use your database provider's built-in backup:
+- Supabase: Automatic daily backups with point-in-time recovery
+- Local: Use `pg_dump` in scheduled script
 
 ---
 
@@ -414,33 +404,17 @@ EXEC sp_add_schedule
 ### Check Database Integrity
 
 ```sql
-DBCC CHECKDB (db54355);
-```
+-- PostgreSQL
+PRAGMA integrity_check;
 
-### Rebuild Indexes
-
-```sql
-ALTER INDEX ALL ON Chefs REBUILD;
-ALTER INDEX ALL ON MenuItems REBUILD;
-ALTER INDEX ALL ON Reservations REBUILD;
-ALTER INDEX ALL ON Reviews REBUILD;
-ALTER INDEX ALL ON ContactInquiries REBUILD;
+-- Or use your database provider's health check tools
 ```
 
 ### Update Statistics
 
 ```sql
-UPDATE STATISTICS Chefs;
-UPDATE STATISTICS MenuItems;
-UPDATE STATISTICS Reservations;
-UPDATE STATISTICS Reviews;
-UPDATE STATISTICS ContactInquiries;
-```
-
-### Shrink Database (Use Sparingly)
-
-```sql
-DBCC SHRINKDATABASE (db54355, 10);
+-- PostgreSQL (automatic or manual)
+ANALYZE;
 ```
 
 ---
@@ -450,47 +424,17 @@ DBCC SHRINKDATABASE (db54355, 10);
 ### View Active Connections
 
 ```sql
-SELECT 
-    session_id,
-    login_name,
-    host_name,
-    program_name,
-    status
-FROM sys.dm_exec_sessions
-WHERE database_id = DB_ID('db54355');
+-- PostgreSQL
+SELECT * FROM pg_stat_activity;
+
+-- Monitor via your database provider's dashboard
 ```
 
 ### Find Slow Queries
 
-```sql
-SELECT TOP 10
-    qs.execution_count,
-    qs.total_elapsed_time / qs.execution_count AS avg_elapsed_time,
-    SUBSTRING(qt.text, (qs.statement_start_offset/2)+1,
-        ((CASE qs.statement_end_offset
-            WHEN -1 THEN DATALENGTH(qt.text)
-            ELSE qs.statement_end_offset
-        END - qs.statement_start_offset)/2) + 1) AS query_text
-FROM sys.dm_exec_query_stats qs
-CROSS APPLY sys.dm_exec_sql_text(qs.sql_handle) qt
-ORDER BY avg_elapsed_time DESC;
-```
-
-### Check Index Usage
-
-```sql
-SELECT 
-    OBJECT_NAME(s.object_id) AS TableName,
-    i.name AS IndexName,
-    s.user_seeks,
-    s.user_scans,
-    s.user_lookups,
-    s.user_updates
-FROM sys.dm_db_index_usage_stats s
-INNER JOIN sys.indexes i ON s.object_id = i.object_id AND s.index_id = i.index_id
-WHERE database_id = DB_ID('db54355')
-ORDER BY s.user_seeks + s.user_scans + s.user_lookups DESC;
-```
+Use your database provider's query monitoring:
+- Supabase: Dashboard analytics
+- Local: Use query plan analysis
 
 ---
 
@@ -501,10 +445,11 @@ ORDER BY s.user_seeks + s.user_scans + s.user_lookups DESC;
 **Problem:** Cannot connect to database
 
 **Solutions:**
-1. Verify SQL Server is running
-2. Check connection string
-3. Verify firewall allows port 1433
-4. Check user permissions
+1. Verify database service is running
+2. Check connection string in environment variables
+3. Verify firewall allows database port (5432 for Postgres)
+4. Check user has proper permissions
+5. For Supabase: Verify project is active and not paused
 
 ### Migration Errors
 
@@ -512,23 +457,16 @@ ORDER BY s.user_seeks + s.user_scans + s.user_lookups DESC;
 
 **Solutions:**
 ```bash
-# Remove last migration
+# Check migration status
+dotnet ef migrations list --project src/NaarNoor.Infrastructure
+
+# Remove last unapplied migration
 dotnet ef migrations remove --project src/NaarNoor.Infrastructure
 
-# Drop database and recreate
+# Reset to known good state (CAREFUL - loses data)
 dotnet ef database drop --project src/NaarNoor.Infrastructure
 dotnet ef database update --project src/NaarNoor.Infrastructure
 ```
-
-### Deadlocks
-
-**Problem:** Deadlock detected
-
-**Solutions:**
-1. Use proper transaction isolation levels
-2. Keep transactions short
-3. Access tables in consistent order
-4. Use `WITH (NOLOCK)` for read queries (use cautiously)
 
 ---
 

@@ -29,7 +29,7 @@ We welcome contributions from everyone! Here are the wonderful people who have h
 
 <!-- This section will be updated as contributors join the project -->
 
-*Be the first contributor! Check out our [Contributing Guide](docs/CONTRIBUTING.md) to get started.*
+*Be the first contributor! Check out our [Contributing Guide](../docs/CONTRIBUTING.md) to get started.*
 
 ## 🎯 How to Become a Contributor
 
@@ -127,7 +127,7 @@ By contributing to Naar & Noor, you agree that:
 
 Ready to contribute? Here's how to get started:
 
-1. **Read** the [Contributing Guide](docs/CONTRIBUTING.md)
+1. **Read** the [Contributing Guide](../docs/CONTRIBUTING.md)
 2. **Check** the [Good First Issues](https://github.com/Mostafa-SAID7/Naar-Noor/labels/good%20first%20issue)
 3. **Join** our [Discussions](https://github.com/Mostafa-SAID7/Naar-Noor/discussions)
 4. **Follow** our [Code of Conduct](CODE_OF_CONDUCT.md)
@@ -146,7 +146,7 @@ Questions about contributing? Reach out to us:
 
 Every contribution, no matter how small, makes a difference. Thank you for helping make Naar & Noor better for everyone!
 
-**Want to see your name here? [Start contributing today!](docs/CONTRIBUTING.md)** 🚀
+**Want to see your name here? [Start contributing today!](../docs/CONTRIBUTING.md)** 🚀
 
 ---
 

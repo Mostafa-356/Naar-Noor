@@ -202,7 +202,7 @@ kill -9 <PID>
 
 ### Database Connection Failed
 
-**Problem:** `Cannot open database "db54355" requested by the login`
+**Problem:** `Cannot open database requested by the login`
 
 **Diagnostic Steps:**
 
@@ -210,14 +210,14 @@ kill -9 <PID>
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Server=db54355.public.databaseasp.net; Database=db54355; User Id=db54355; Password=eW!62%tA=bT7; Encrypt=True; TrustServerCertificate=True;"
+    "DefaultConnection": "Host=your-host.supabase.co;Port=5432;Database=postgres;User Id=postgres;Password=YOUR_PASSWORD_HERE;SSLMode=Require;"
   }
 }
 ```
 
 **2. Test Connection:**
 ```bash
-sqlcmd -S db54355.public.databaseasp.net -U db54355 -P "eW!62%tA=bT7" -d db54355
+psql -h your-host.supabase.co -U postgres -d postgres -c "SELECT version();"
 ```
 
 **3. Check Firewall:**
@@ -413,20 +413,18 @@ SELECT
     login_name,
     status,
     blocking_session_id
-FROM sys.dm_exec_sessions
-WHERE database_id = DB_ID('db54355');
+FROM pg_stat_activity
+WHERE state = 'active';
 ```
 
-**2. Kill Blocking Sessions:**
+**2. Terminate Blocking Sessions:**
 ```sql
-KILL <session_id>;
+SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE pid <> pg_backend_pid() AND state = 'idle in transaction';
 ```
 
-**3. Set Database to Single User Mode:**
+**3. Check PostgreSQL Connection Limits:**
 ```sql
-ALTER DATABASE db54355 SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
--- Perform operations
-ALTER DATABASE db54355 SET MULTI_USER;
+SHOW max_connections;
 ```
 
 ---

@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NaarNoor.Application.Contact.Commands.SubmitInquiry;
 
@@ -15,6 +16,7 @@ public class ContactController : ControllerBase
         _mediator = mediator;
     }
 
+    [AllowAnonymous]  // ✅ SECURITY: Explicitly allow unauthenticated contact submissions
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

@@ -62,7 +62,7 @@ build = ["bash", "-c", "cd naar-noor && npm install && npm run build && cd ../ap
 [userenv]
 
 [userenv.shared]
-SUPABASE_URL = "https://uyzocpvytoljigmcpafn.supabase.co"
-SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV5em9jcHZ5dG9samlnbWNwYWZuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI1OTc0MzYsImV4cCI6MjA5ODE3MzQzNn0.Atyx6bnxSHNti8OAEim7qHwXbLJftU-1BxaNVXsQc3M"
+SUPABASE_URL = "https://your-project.supabase.co"
+SUPABASE_ANON_KEY = "YOUR_ANON_KEY_HERE"
 ASPNETCORE_ENVIRONMENT = "Development"
 PORT = "8080"

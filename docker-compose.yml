@@ -1,4 +1,18 @@
-# Production compose file
+# Production compose file with environment-based secret management
+# IMPORTANT: Set these environment variables before running:
+#   export SUPABASE_DB_HOST=your-db-host
+#   export SUPABASE_DB_PASSWORD=your-db-password
+#   export SUPABASE_URL=your-supabase-url
+#   export SUPABASE_ANON_KEY=your-anon-key
+#   export SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+#
+# For production with Docker secrets, use:
+#   docker secret create supabase_db_password <(echo -n "your-password")
+#   Then reference as: ${SUPABASE_DB_PASSWORD:-/run/secrets/supabase_db_password}
+#
+# For Docker Swarm/Kubernetes, use secrets management instead:
+#   docker-compose -f docker-compose.yml -f docker-compose.secrets.yml up
+#
 # Naming Convention: naar-noor-{environment}-{service}
 # Services: web (frontend), api (backend), database
 
@@ -46,12 +60,16 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:80
-      - POSTGRESQL_CONNECTION_STRING=Host=db.uyzocpvytoljigmcpafn.supabase.co;Port=5432;Database=postgres;User Id=postgres;Password=${SUPABASE_DB_PASSWORD}
+      # ✅ SECURITY: All secrets must be set via environment variables
+      # DO NOT hardcode in this file - pass via:
+      #   - export statements (development)
+      #   - Docker secrets (Docker Swarm/Kubernetes)
+      #   - CI/CD secrets (GitHub Actions, GitLab CI, etc.)
+      #   - Cloud secret manager (AWS Secrets Manager, Azure Key Vault, etc.)
+      - POSTGRESQL_CONNECTION_STRING=Host=${SUPABASE_DB_HOST};Port=5432;Database=postgres;User Id=postgres;Password=${SUPABASE_DB_PASSWORD};SSL Mode=Require
       - Supabase__Url=${SUPABASE_URL}
       - Supabase__AnonKey=${SUPABASE_ANON_KEY}
       - Supabase__ServiceRoleKey=${SUPABASE_SERVICE_ROLE_KEY}
-    depends_on:
-      - naar-noor-prod-web
     networks:
       - naar-noor-prod-network
     restart: unless-stopped

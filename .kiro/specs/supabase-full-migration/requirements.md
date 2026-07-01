@@ -178,10 +178,10 @@ Request → CORS Middleware → Auth Middleware (JWT Verification) → Authoriza
 ### 5.1 Environment Variables (Production)
 ```bash
 # Database
-POSTGRESQL_CONNECTION_STRING=Host=db.uyzocpvytoljigmcpafn.supabase.co;Port=5432;Database=postgres;User Id=postgres;Password=SECURE_PASSWORD
+POSTGRESQL_CONNECTION_STRING=Host=db.YOUR_PROJECT.supabase.co;Port=5432;Database=postgres;User Id=postgres;Password=YOUR_PASSWORD_HERE
 
 # Supabase
-SUPABASE_URL=https://uyzocpvytoljigmcpafn.supabase.co
+SUPABASE_URL=https://YOUR_PROJECT.supabase.co
 SUPABASE_ANON_KEY=YOUR_ANON_KEY
 SUPABASE_SERVICE_ROLE_KEY=YOUR_SERVICE_ROLE_KEY
 
@@ -208,9 +208,9 @@ ENABLE_SUPABASE_REALTIME=true
     "SupabasePostgresql": "Host=..."
   },
   "Supabase": {
-    "Url": "https://uyzocpvytoljigmcpafn.supabase.co",
-    "AnonKey": "...",
-    "ServiceRoleKey": "..."
+    "Url": "https://YOUR_PROJECT.supabase.co",
+    "AnonKey": "YOUR_ANON_KEY_HERE",
+    "ServiceRoleKey": "YOUR_SERVICE_ROLE_KEY_HERE"
   },
   "Features": {
     "EnableSwagger": false,

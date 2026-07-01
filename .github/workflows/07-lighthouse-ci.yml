@@ -1,0 +1,76 @@
+name: Lighthouse CI
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    name: Lighthouse Audit
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        working-directory: naar-noor
+        run: npm ci
+
+      - name: Build production bundle
+        working-directory: naar-noor
+        run: npm run build
+
+      - name: Run Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v10
+        with:
+          configPath: './naar-noor/lighthouse.config.js'
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+
+      - name: Comment PR with Lighthouse scores
+        uses: actions/github-script@v6
+        if: github.event_name == 'pull_request'
+        with:
+          script: |
+            const fs = require('fs');
+            const report = JSON.parse(fs.readFileSync('./lhr/manifest.json'));
+            const result = report.results[0].summary;
+            
+            const scores = {
+              performance: Math.round(result.performance * 100),
+              accessibility: Math.round(result.accessibility * 100),
+              'best-practices': Math.round(result['best-practices'] * 100),
+              seo: Math.round(result.seo * 100),
+            };
+            
+            const comment = `## 🔦 Lighthouse Report
+            
+| Metric | Score |
+|--------|-------|
+| Performance | ${scores.performance} |
+| Accessibility | ${scores.accessibility} |
+| Best Practices | ${scores['best-practices']} |
+| SEO | ${scores.seo} |
+
+[View full report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            `;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });

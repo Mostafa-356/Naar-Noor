@@ -326,3 +326,76 @@ html.theme-light .shadow-\[0_24px_80px_rgba\(0\,0\,0\,0\.6\)\] {
 
 /* Neutral-700 text used for small labels */
 html.theme-light .text-neutral-700 { color: #a89e90 !important; }
+
+
+/* ── RTL Support for Arabic ────────────────────────── */
+body.rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+body.rtl nav,
+body.rtl [dir="auto"] {
+  direction: rtl;
+}
+
+body.rtl input,
+body.rtl textarea,
+body.rtl select {
+  text-align: right;
+  direction: rtl;
+}
+
+body.rtl .flex {
+  flex-direction: row-reverse;
+}
+
+body.rtl .flex-col {
+  flex-direction: column;
+}
+
+body.rtl .justify-start {
+  justify-content: flex-end;
+}
+
+body.rtl .justify-end {
+  justify-content: flex-start;
+}
+
+body.rtl .text-left {
+  text-align: right;
+}
+
+body.rtl .text-right {
+  text-align: left;
+}
+
+body.rtl .ml-auto {
+  margin-right: auto;
+  margin-left: 0;
+}
+
+body.rtl .mr-auto {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+body.rtl .pl-4 {
+  padding-right: 1rem;
+  padding-left: 0;
+}
+
+body.rtl .pr-4 {
+  padding-left: 1rem;
+  padding-right: 0;
+}
+
+body.rtl .border-l {
+  border-right: 1px solid;
+  border-left: none;
+}
+
+body.rtl .border-r {
+  border-left: 1px solid;
+  border-right: none;
+}

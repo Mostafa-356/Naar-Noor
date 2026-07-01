@@ -26,6 +26,11 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore api-server/NaarNoor.sln
 
+      - name: Check NuGet vulnerabilities
+        run: dotnet list package --vulnerable --format json
+        working-directory: api-server
+        continue-on-error: true
+
       - name: Build projects
         run: dotnet build api-server/NaarNoor.sln --no-restore --configuration Release
 
@@ -62,6 +67,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
         working-directory: naar-noor
+
+      - name: Run npm audit
+        run: npm audit --audit-level=moderate
+        working-directory: naar-noor
+        continue-on-error: true
 
       - name: Run unit tests
         run: npm run test:ci

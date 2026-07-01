@@ -22,9 +22,6 @@ provider "kubernetes" {
   config_path = var.kubernetes_config_path
 }
 
-# Helm Provider — must share the same cluster config as the kubernetes provider
+# Helm Provider — automatically inherits kubernetes provider configuration
 provider "helm" {
-  kubernetes {
-    config_path = var.kubernetes_config_path
-  }
 }

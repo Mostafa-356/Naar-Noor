@@ -136,10 +136,10 @@ Password Reset → Email Link → New Password
 
 ```bash
 # Database
-POSTGRESQL_CONNECTION_STRING=Host=db.uyzocpvytoljigmcpafn.supabase.co;Port=5432;Database=postgres;User Id=postgres;Password=YOUR_PASSWORD
+POSTGRESQL_CONNECTION_STRING=Host=db.YOUR_PROJECT.supabase.co;Port=5432;Database=postgres;User Id=postgres;Password=YOUR_PASSWORD
 
 # Supabase
-SUPABASE_URL=https://uyzocpvytoljigmcpafn.supabase.co
+SUPABASE_URL=https://YOUR_PROJECT.supabase.co
 SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 SUPABASE_SERVICE_ROLE_KEY=YOUR_SERVICE_ROLE_KEY
 
@@ -166,7 +166,7 @@ ENABLE_SUPABASE_REALTIME=true
 2. **Update with your values**:
    ```bash
    POSTGRESQL_CONNECTION_STRING=Your_Supabase_Connection_String
-   SUPABASE_URL=https://uyzocpvytoljigmcpafn.supabase.co
+   SUPABASE_URL=https://YOUR_PROJECT.supabase.co
    SUPABASE_ANON_KEY=Your_Anon_Key
    SUPABASE_SERVICE_ROLE_KEY=Your_Service_Role_Key
    ```
@@ -310,7 +310,7 @@ docker run \
 ## Troubleshooting
 
 ### Database Connection Failed
-**Symptoms**: `Unable to connect to host db.uyzocpvytoljigmcpafn.supabase.co`
+**Symptoms**: `Unable to connect to host db.YOUR_PROJECT.supabase.co`
 
 **Solutions**:
 1. Verify POSTGRESQL_CONNECTION_STRING is correct

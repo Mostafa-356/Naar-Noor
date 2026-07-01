@@ -23,6 +23,9 @@ builder.Host.UseSerilog();
 try
 {
     Log.Information("Starting Naar-Noor API...");
+    Log.Information("Environment: {Environment}", builder.Environment.EnvironmentName);
+    Log.Information("Machine: {MachineName}", Environment.MachineName);
+    Log.Information("Time: {UtcNow:O}", DateTime.UtcNow);
 
     // ===== SERVICE REGISTRATION =====
 
@@ -69,14 +72,41 @@ try
     // 6. CORS - Phase 2.4
     app.UseCorsMiddleware();
 
-    // 7. Authorization
+    // 7. ✅ Authentication (MUST be before Authorization)
+    app.UseAuthentication();
+
+    // 8. Authorization
     app.UseAuthorizationMiddleware();
 
-    // 8. Map Controllers
+    // 9. Map Controllers
     app.MapControllersMiddleware();
 
     // 9. Map Health Checks
     app.MapHealthChecks("/health");
+
+    // ✅ OBSERVABILITY: Map detailed health checks endpoint with UI
+    app.MapHealthChecks("/health/detailed", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
+    {
+        ResponseWriter = async (context, report) =>
+        {
+            context.Response.ContentType = "application/json";
+            using var writer = new System.IO.StreamWriter(context.Response.Body);
+            await writer.WriteLineAsync(System.Text.Json.JsonSerializer.Serialize(new
+            {
+                status = report.Status.ToString(),
+                timestamp = DateTime.UtcNow,
+                checks = report.Entries.Select(entry => new
+                {
+                    name = entry.Key,
+                    status = entry.Value.Status.ToString(),
+                    duration = entry.Value.Duration,
+                    description = entry.Value.Description,
+                    exception = entry.Value.Exception?.Message
+                })
+            }));
+            await writer.FlushAsync();
+        }
+    });
 
     // 10. Explicit HTML page routes
     var webRootPath = app.Environment.WebRootPath ?? Path.Combine(AppContext.BaseDirectory, "wwwroot");

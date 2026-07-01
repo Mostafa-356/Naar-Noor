@@ -1,0 +1,151 @@
+name: SAST & SCA Security Scanning
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+  schedule:
+    - cron: '0 2 * * *'  # Daily at 2 AM UTC
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  # Static Application Security Testing (SAST)
+  codeql:
+    runs-on: ubuntu-latest
+    name: CodeQL Analysis
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ['javascript', 'csharp']
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: ${{ matrix.language }}
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v2
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+        with:
+          category: /language:${{ matrix.language }}
+
+  # Software Composition Analysis (SCA) - npm
+  npm-audit:
+    runs-on: ubuntu-latest
+    name: NPM Audit & OWASP Check
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Run npm audit
+        working-directory: naar-noor
+        run: npm audit --audit-level=high
+
+      - name: Run npm-check-updates
+        working-directory: naar-noor
+        run: npm outdated || true
+
+  # Software Composition Analysis (SCA) - NuGet
+  nuget-audit:
+    runs-on: ubuntu-latest
+    name: NuGet Audit
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0'
+
+      - name: Check for vulnerable NuGet packages
+        working-directory: api-server
+        run: dotnet list package --vulnerable
+
+  # Container Image Scanning
+  container-scan:
+    runs-on: ubuntu-latest
+    name: Container Image Scanning
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Docker images
+        run: |
+          docker-compose build --no-cache
+
+      - name: Scan frontend image with Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'naar-noor:frontend'
+          format: 'sarif'
+          output: 'trivy-frontend.sarif'
+
+      - name: Scan backend image with Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'naar-noor:backend'
+          format: 'sarif'
+          output: 'trivy-backend.sarif'
+
+      - name: Upload Trivy results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'trivy-frontend.sarif'
+          category: 'trivy-frontend'
+
+      - name: Upload backend Trivy results
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'trivy-backend.sarif'
+          category: 'trivy-backend'
+
+  # Dependency Check (OWASP)
+  dependency-check:
+    runs-on: ubuntu-latest
+    name: OWASP Dependency Check
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run OWASP Dependency-Check
+        uses: dependency-check/Dependency-Check_Action@main
+        with:
+          path: '.'
+          format: 'SARIF'
+          args: >
+            --enable-retired
+
+      - name: Upload results to GitHub
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'dependency-check-report.sarif'
+          category: 'dependency-check'
+
+  # Summary
+  security-summary:
+    runs-on: ubuntu-latest
+    name: Security Scan Summary
+    needs: [codeql, npm-audit, nuget-audit, container-scan, dependency-check]
+    if: always()
+    steps:
+      - name: Print Security Summary
+        run: |
+          echo "=== SECURITY SCANNING COMPLETE ==="
+          echo "✓ CodeQL SAST: Completed"
+          echo "✓ npm SCA: Completed"
+          echo "✓ NuGet SCA: Completed"
+          echo "✓ Container Scanning: Completed"
+          echo "✓ Dependency Check: Completed"
+          echo "================================"

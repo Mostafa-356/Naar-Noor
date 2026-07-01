@@ -7,6 +7,7 @@ import { AnimatedBackgroundComponent } from './components/animated-background/an
 import { ToastComponent } from './components/toast/toast.component';
 import { CartDrawerComponent } from './components/cart-drawer/cart-drawer.component';
 import { CommonModule } from '@angular/common';
+import { LanguageService } from './services/language.service';
 
 @Component({
   selector: 'app-root',
@@ -37,9 +38,13 @@ import { CommonModule } from '@angular/common';
 })
 export class AppComponent implements OnInit {
   private readonly router = inject(Router);
+  private readonly languageService = inject(LanguageService);  // ✅ Initialize i18n
   pageReady = false;
 
   ngOnInit(): void {
+    // LanguageService initialization happens via dependency injection
+    // It loads the saved language preference or defaults to 'en'
+
     this.router.events
       .pipe(
         filter(e => e instanceof NavigationEnd),

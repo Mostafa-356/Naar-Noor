@@ -12,6 +12,7 @@ publish/
 # Test coverage
 coverage/
 test-results/
+frontend-coverage/
 
 # IDE
 .vscode/
@@ -54,9 +55,12 @@ api-server/**/TestResults/
 naar-noor/coverage/
 naar-noor/cypress/screenshots/
 naar-noor/cypress/videos/
+frontend-coverage/
 
 # Sensitive files
 *.pem
 *.key
 secrets.json
 appsettings.*.json
+terraform.tfvars
+.terraform/

@@ -17,7 +17,7 @@ This guide documents the complete migration from SQL Server to Supabase PostgreS
 - **Provider**: PostgreSQL via Supabase
 - **Hosted**: Supabase Cloud
 - **Connection String**: PostgreSQL format
-- **URL**: `https://uyzocpvytoljigmcpafn.supabase.co`
+- **URL**: `https://YOUR_PROJECT.supabase.co`
 
 ### 2. NuGet Package Changes
 
@@ -39,12 +39,12 @@ This guide documents the complete migration from SQL Server to Supabase PostgreS
 
 #### SQL Server Format (Old)
 ```
-Server=db54355.public.databaseasp.net;Database=db54355;User Id=db54355;Password=eW!62%tA=bT7;Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True;
+Server=old-server.example.com;Database=dbname;User Id=username;Password=YOUR_PASSWORD_HERE;Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True;
 ```
 
 #### PostgreSQL Format (New)
 ```
-Host=db.uyzocpvytoljigmcpafn.supabase.co;Port=5432;Database=postgres;User Id=postgres;Password=YOUR_PASSWORD_HERE;
+Host=db.YOUR_PROJECT.supabase.co;Port=5432;Database=postgres;User Id=postgres;Password=YOUR_PASSWORD_HERE;
 ```
 
 ### 4. EF Core Provider Configuration
@@ -65,7 +65,7 @@ options.UseNpgsql(connectionString, npgsql =>
 #### appsettings.json
 ```json
 "Supabase": {
-  "Url": "https://uyzocpvytoljigmcpafn.supabase.co",
+  "Url": "https://YOUR_PROJECT.supabase.co",
   "AnonKey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
   "ServiceRoleKey": "YOUR_SERVICE_ROLE_KEY_HERE"
 }
@@ -185,8 +185,8 @@ No entity code changes are required. Entity Framework Core 8.0.11 with Npgsql ha
 Copy `.env.example` to `.env` and update:
 
 ```bash
-POSTGRESQL_CONNECTION_STRING=Host=db.uyzocpvytoljigmcpafn.supabase.co;Port=5432;Database=postgres;User Id=postgres;Password=YOUR_ACTUAL_PASSWORD;
-SUPABASE_URL=https://uyzocpvytoljigmcpafn.supabase.co
+POSTGRESQL_CONNECTION_STRING=Host=db.YOUR_PROJECT.supabase.co;Port=5432;Database=postgres;User Id=postgres;Password=YOUR_ACTUAL_PASSWORD;
+SUPABASE_URL=https://YOUR_PROJECT.supabase.co
 SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 SUPABASE_SERVICE_ROLE_KEY=YOUR_SERVICE_ROLE_KEY
 ```
@@ -304,8 +304,8 @@ Update GitHub Actions workflows (`.github/workflows/`) to include Supabase crede
 
 ### Connection Issues
 1. Verify Supabase credentials are correct
-2. Check firewall rules allow connections to `db.uyzocpvytoljigmcpafn.supabase.co:5432`
-3. Test connection with psql: `psql -h db.uyzocpvytoljigmcpafn.supabase.co -U postgres -d postgres`
+2. Check firewall rules allow connections to `db.YOUR_PROJECT.supabase.co:5432`
+3. Test connection with psql: `psql -h db.YOUR_PROJECT.supabase.co -U postgres -d postgres`
 
 ### EF Core Migration Issues
 1. Clear pending migrations: `dotnet ef migrations remove`

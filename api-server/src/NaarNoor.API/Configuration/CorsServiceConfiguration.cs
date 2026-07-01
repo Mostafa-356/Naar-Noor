@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 /// <summary>
 /// CORS service registration - Environment-aware configuration
 /// Development: AllowAnyOrigin (localhost development)
-/// Production: Specific origin only (https://naar-noor.vercel.app)
+/// Production: Specific origins only (CORS_ALLOWED_ORIGINS env var)
 /// </summary>
 public static class CorsServiceConfiguration
 {
@@ -17,9 +17,25 @@ public static class CorsServiceConfiguration
         {
             options.AddDefaultPolicy(policy =>
             {
-                policy.AllowAnyOrigin()
-                      .AllowAnyHeader()
-                      .AllowAnyMethod();
+                if (environment == "Development")
+                {
+                    // Development: Allow localhost for frontend development
+                    policy.WithOrigins("http://localhost:5000", "http://localhost:4200", "http://127.0.0.1:5000")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod()
+                          .AllowCredentials();
+                }
+                else
+                {
+                    // Production: Restrict to configured origins only
+                    var allowedOrigins = configuration["CORS:AllowedOrigins"]?.Split(',') 
+                        ?? new[] { "https://naar-noor.vercel.app" };
+                    
+                    policy.WithOrigins(allowedOrigins)
+                          .AllowAnyHeader()
+                          .AllowAnyMethod()
+                          .AllowCredentials();
+                }
             });
         });
     }

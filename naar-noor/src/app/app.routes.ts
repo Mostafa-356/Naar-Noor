@@ -3,14 +3,16 @@ import { HomeComponent } from './pages/home/home.component';
 import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
+  { path: '', component: HomeComponent, data: { preload: true } },
   {
     path: 'menu',
-    loadComponent: () => import('./pages/menu/menu.component').then(m => m.MenuPageComponent)
+    loadComponent: () => import('./pages/menu/menu.component').then(m => m.MenuPageComponent),
+    data: { preload: true }  // ✅ High priority - preload after home
   },
   {
     path: 'reservations',
-    loadComponent: () => import('./pages/reservations/reservations.component').then(m => m.ReservationsPageComponent)
+    loadComponent: () => import('./pages/reservations/reservations.component').then(m => m.ReservationsPageComponent),
+    data: { preload: true }  // ✅ High priority
   },
   {
     path: 'about',

@@ -389,20 +389,23 @@ dotnet ef migrations script --project src/NaarNoor.Infrastructure --output migra
 
 ### Backup Strategy
 
-**Daily Full Backup:**
+**Daily Full Backup (Supabase):**
 
 ```sql
-BACKUP DATABASE db54355
-TO DISK = '/backups/NaarNoor_Full_$(DATE).bak'
-WITH COMPRESSION;
+-- Supabase provides managed backups automatically
+-- Export backup through Supabase dashboard or use pg_dump
+pg_dump -h db.YOUR_PROJECT.supabase.co -U postgres -d postgres > backup.sql
 ```
 
-**Hourly Transaction Log Backup:**
+**Automated Backups:**
 
-```sql
-BACKUP LOG db54355
-TO DISK = '/backups/NaarNoor_Log_$(DATETIME).trn'
-WITH COMPRESSION;
+```bash
+# Setup automated backups via pg_dump
+#!/bin/bash
+export PGHOST=db.YOUR_PROJECT.supabase.co
+export PGUSER=postgres
+export PGPASSWORD=$DB_PASSWORD
+pg_dump postgres | gzip > /backups/NaarNoor_$(date +%Y%m%d_%H%M%S).sql.gz
 ```
 
 ---

@@ -41,9 +41,13 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - DatabaseHost=naar-noor-dev-database
-      - DatabasePort=1433
-      - ConnectionStrings__DefaultConnection=Server=naar-noor-dev-database;Database=db54355;User Id=sa;Password=YourPassword123!;Encrypt=False;TrustServerCertificate=True;MultipleActiveResultSets=True;
+      - PGHOST=naar-noor-postgres
+      - PGPORT=5432
+      - PGDATABASE=postgres
+      - PGUSER=postgres
+      - PGPASSWORD=${PGPASSWORD:-dev_password_change_me}
+      - SUPABASE_URL=${SUPABASE_URL:-http://localhost:54321}
+      - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY:-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24ifQ.625_WdcF3KHqz5amU0x2KfUqKS4FTO2p9PsrqjIjxQA}
     ports:
       - "8080:80"
       - "7000:7000"  # Debug port
@@ -58,7 +62,7 @@ services:
     container_name: naar-noor-dev-database
     hostname: naar-noor-dev-database
     environment:
-      - MSSQL_SA_PASSWORD=YourPassword123!
+      - MSSQL_SA_PASSWORD=${MSSQL_SA_PASSWORD:-YourPassword123!}
       - ACCEPT_EULA=Y
     ports:
       - "1433:1433"

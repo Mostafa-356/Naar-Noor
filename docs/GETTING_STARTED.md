@@ -94,15 +94,22 @@ dotnet ef database update --project src/NaarNoor.Infrastructure
 
 **Connection String:**
 
-Update `appsettings.json` with your SQL Server connection:
+Update `appsettings.json` with your database connection. Use environment variables instead:
 
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Server=db54355.public.databaseasp.net; Database=db54355; User Id=db54355; Password=eW!62%tA=bT7; Encrypt=True; TrustServerCertificate=True;"
+    "DefaultConnection": ""
   }
 }
 ```
+
+**Set via environment variables** (recommended):
+- Linux/Mac: `export PGHOST=your-host && export PGUSER=user && export PGPASSWORD=password`
+- Windows: `set PGHOST=your-host` or use `.env` file
+- Docker: Mount `.env` or pass as build args
+
+⚠️ **Never commit real credentials. Always use environment variables.**
 
 ---
 
