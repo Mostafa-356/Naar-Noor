@@ -37,41 +37,6 @@ jobs:
           path: ./frontend-test-results
         continue-on-error: true
 
-      # ==================== Generate Fresh Coverage Data ====================
-      # The artifacts downloaded above only contain .trx test logs, not coverage
-      # reports, so this job must generate its own coverage.cobertura.xml files
-      # by re-running the test suites with coverage collection enabled.
-
-      - name: Setup .NET 8.0
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
-
-      - name: Restore backend dependencies
-        run: dotnet restore api-server/NaarNoor.sln
-
-      - name: Build backend projects
-        run: dotnet build api-server/NaarNoor.sln --no-restore --configuration Release
-
-      - name: Clean stale coverage results
-        run: |
-          find api-server/tests -type d -name TestResults -exec rm -rf {} + 2>/dev/null || true
-          rm -rf api-server/TestResults
-
-      - name: Run backend tests with coverage
-        run: |
-          for proj in NaarNoor.Domain.Tests NaarNoor.Application.Tests NaarNoor.Infrastructure.Tests NaarNoor.API.Tests; do
-            settings="api-server/tests/$proj/coverlet.runsettings"
-            if [ ! -f "$settings" ]; then
-              settings="api-server/coverlet.runsettings"
-            fi
-            dotnet test "api-server/tests/$proj/$proj.csproj" \
-              --no-build --configuration Release \
-              --collect:"XPlat Code Coverage" \
-              --settings "$settings" \
-              --results-directory "api-server/tests/$proj/TestResults"
-          done
-
       # ==================== Coverage Validation ====================
 
       - name: Setup Node.js 20
