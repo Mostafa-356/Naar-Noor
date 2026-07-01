@@ -1,4 +1,3 @@
-/// <reference types="jasmine" />
 import { TestBed } from '@angular/core/testing';
 import { Title, Meta } from '@angular/platform-browser';
 import { SeoService, SeoConfig } from '../seo.service';

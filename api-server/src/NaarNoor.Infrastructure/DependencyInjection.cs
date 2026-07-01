@@ -1,6 +1,7 @@
 using AspNetCoreRateLimit;
 using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
@@ -73,7 +74,7 @@ public static class DependencyInjection
                 {
                     if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
                     {
-                        context.Response.Headers.Add("Token-Expired", "true");
+                        context.Response.Headers.Append("Token-Expired", "true");
                     }
                     return Task.CompletedTask;
                 },

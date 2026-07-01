@@ -37,8 +37,8 @@ export class LanguageService {
    * Initialize translation service
    */
   private initializeTranslation(): void {
-    this.translateService.setDefaultLanguage(this.DEFAULT_LANGUAGE);
-    this.translateService.addLanguages(this.SUPPORTED_LANGUAGES);
+    this.translateService.setDefaultLang(this.DEFAULT_LANGUAGE);
+    this.translateService.addLangs(this.SUPPORTED_LANGUAGES);
     this.setLanguage(this.currentLanguage$.value);
   }
 
