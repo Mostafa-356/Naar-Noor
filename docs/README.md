@@ -26,18 +26,3 @@ Welcome to the **Naar-Noor** documentation directory. Below is an index of all d
 *   **[CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)** - Community guidelines.
 *   **[CONTRIBUTING.md](CONTRIBUTING.md)** - Code contribution rules.
 *   **[CONTRIBUTORS.md](CONTRIBUTORS.md)** - Credits for developers.
-
----
-
-## 🗄️ Historical Archive
-Historical reports, implementation setup logs, and summaries are archived in **[docs/archive/](archive/)**:
-*   `archive/PROJECT_SUMMARY.md` - Phase 2 final summary
-*   `archive/STAKEHOLDER_SUMMARY.md` - Delivery report for stakeholders
-*   `archive/BUILD_FIX_REPORT.md` - Resolve issues with ngx-translate module resolution
-*   `archive/DEPENDENCY_AUDIT.md` - Package versions audit (Jan 2026)
-*   `archive/MEDIUM_PRIORITY_ISSUES.md` - Phase 2 task tracking checklist
-*   `archive/SUPABASE_MIGRATION.md` - Migration details from SQL Server to Supabase PostgreSQL
-*   `archive/PRODUCTION_READINESS_CHECKLIST.md` - Production readiness checklist (July 2026)
-*   `archive/JWT_AUTHENTICATION_SETUP.md` - Phase 1 JWT authentication security setup log
-*   `archive/I18N_SETUP_GUIDE.md` - Bilingual localization integration details
-*   `archive/PERFORMANCE_OPTIMIZATION.md` - Caching, database, and bundle budget optimization logs
