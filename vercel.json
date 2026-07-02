@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "cleanUrls": true,
+  "buildCommand": "npm run build --prefix naar-noor",
+  "installCommand": "npm install --prefix naar-noor",
+  "outputDirectory": "naar-noor/dist/naar-noor/browser",
+  "routes": [
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/.*",
+      "dest": "/index.html"
+    }
+  ]
+}
