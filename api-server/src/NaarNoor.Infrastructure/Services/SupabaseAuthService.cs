@@ -28,7 +28,7 @@ public class SupabaseAuthService : ISupabaseAuthService
     {
         try
         {
-            _logger.LogInformation("Registering user with email: {Email}", email);
+            _logger.LogInformation("Registering new user at {Timestamp}", DateTime.UtcNow);
             
             var request = new { email, password };
             var content = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
@@ -52,7 +52,7 @@ public class SupabaseAuthService : ISupabaseAuthService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error registering user with email: {Email}", email);
+            _logger.LogError(ex, "Error registering user at {Timestamp}", DateTime.UtcNow);
             return (false, null, ex.Message);
         }
     }
@@ -61,7 +61,7 @@ public class SupabaseAuthService : ISupabaseAuthService
     {
         try
         {
-            _logger.LogInformation("Logging in user with email: {Email}", email);
+            _logger.LogInformation("Login attempt at {Timestamp}", DateTime.UtcNow);
             
             var request = new { email, password };
             var content = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
@@ -77,7 +77,7 @@ public class SupabaseAuthService : ISupabaseAuthService
             
             if (root.TryGetProperty("access_token", out var token))
             {
-                _logger.LogInformation("User logged in successfully: {Email}", email);
+                _logger.LogInformation("User logged in successfully at {Timestamp}", DateTime.UtcNow);
                 return (true, token.GetString(), null);
             }
 
@@ -85,7 +85,7 @@ public class SupabaseAuthService : ISupabaseAuthService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error logging in user with email: {Email}", email);
+            _logger.LogError(ex, "Error during login at {Timestamp}", DateTime.UtcNow);
             return (false, null, ex.Message);
         }
     }
@@ -240,7 +240,7 @@ public class SupabaseAuthService : ISupabaseAuthService
     {
         try
         {
-            _logger.LogInformation("Initiating password reset for email: {Email}", email);
+            _logger.LogInformation("Password reset requested at {Timestamp}", DateTime.UtcNow);
             
             var request = new { email };
             var content = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
@@ -250,12 +250,12 @@ public class SupabaseAuthService : ISupabaseAuthService
             if (!response.IsSuccessStatusCode)
                 return (false, await response.Content.ReadAsStringAsync());
 
-            _logger.LogInformation("Password reset email sent to: {Email}", email);
+            _logger.LogInformation("Password reset email sent successfully at {Timestamp}", DateTime.UtcNow);
             return (true, null);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error resetting password for email: {Email}", email);
+            _logger.LogError(ex, "Error during password reset at {Timestamp}", DateTime.UtcNow);
             return (false, ex.Message);
         }
     }

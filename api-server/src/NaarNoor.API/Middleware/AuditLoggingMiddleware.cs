@@ -53,11 +53,13 @@ public static class AuditLoggingMiddleware
                 var safeUserId = SanitizeForLog(userId);
                 var safePath   = SanitizeForLog(request.Path.Value ?? "");
                 var safeBody   = SanitizeForLog(bodyContent[..Math.Min(500, bodyContent.Length)]);
+                // HTTP method is also user-controlled in raw socket connections
+                var safeMethod = SanitizeForLog(request.Method);
 
                 // Log audit event
                 logger.LogInformation(
                     "AUDIT: {Method} {Path} by {UserId} at {Timestamp} | Body: {Body}",
-                    request.Method,
+                    safeMethod,
                     safePath,
                     safeUserId,
                     DateTime.UtcNow,

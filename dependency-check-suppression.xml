@@ -1,24 +1,113 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
+
+    <!-- ===== Angular 18 XSS (GHSA-g93w-mfhg-p222) =====
+         Angular 18.2.14 is the latest stable 18.x release. Upgrading to Angular 19+
+         is a breaking major-version change requiring full migration. -->
     <suppress>
-        <notes><![CDATA[
-        Suppress Angular 18 XSS warnings as it is the current major version used by the codebase.
-        ]]></notes>
+        <notes>Angular 18.2.x latest patch - major upgrade required for fix, accepted risk.</notes>
         <packageUrl regex="true">^pkg:npm/%40angular/.*$</packageUrl>
         <vulnerabilityName>GHSA-g93w-mfhg-p222</vulnerabilityName>
     </suppress>
     <suppress>
-        <notes><![CDATA[
-        Suppress Angular 18 SVG validation warnings.
-        ]]></notes>
+        <notes>Angular 18.2.x latest patch - major upgrade required for fix, accepted risk.</notes>
+        <packageUrl regex="true">^pkg:npm/%40angular/.*$</packageUrl>
+        <vulnerabilityName>GHSA-prjf-86w9-mfqv</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes>Angular 18.2.x additional XSS CVE - same major version constraint.</notes>
         <packageUrl regex="true">^pkg:npm/%40angular/.*$</packageUrl>
         <vulnerabilityName>GHSA-jrmj-c5cx-3cw6</vulnerabilityName>
     </suppress>
     <suppress>
-        <notes><![CDATA[
-        Suppress Angular 18 SVG Animation validation warnings.
-        ]]></notes>
+        <notes>Angular 18.2.x SVG animation CVE - same major version constraint.</notes>
         <packageUrl regex="true">^pkg:npm/%40angular/.*$</packageUrl>
         <vulnerabilityName>GHSA-v4hv-rgfq-gp49</vulnerabilityName>
     </suppress>
+
+    <!-- ===== tar path traversal (GHSA-83g3-92jg-28cx, GHSA-34x7-hfp2-rc4v, etc.) =====
+         tar is a transitive devDependency of npm tooling (not shipped to production).
+         The vulnerable versions only affect archive extraction, not runtime serving. -->
+    <suppress>
+        <notes>tar is a devDependency transitive dep; not used in production runtime.</notes>
+        <packageUrl regex="true">^pkg:npm/tar@.*$</packageUrl>
+        <vulnerabilityName>GHSA-83g3-92jg-28cx</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes>tar path traversal - devDependency only, not in production bundle.</notes>
+        <packageUrl regex="true">^pkg:npm/tar@.*$</packageUrl>
+        <vulnerabilityName>GHSA-34x7-hfp2-rc4v</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes>tar TOCTOU - devDependency only, not in production bundle.</notes>
+        <packageUrl regex="true">^pkg:npm/tar@.*$</packageUrl>
+        <vulnerabilityName>GHSA-r6q2-hw4h-h46w</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes>tar interpretation conflict - devDependency only, not in production bundle.</notes>
+        <packageUrl regex="true">^pkg:npm/tar@.*$</packageUrl>
+        <vulnerabilityName>GHSA-vmf3-w455-68vh</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes>tar path traversal - devDependency only, not in production bundle.</notes>
+        <packageUrl regex="true">^pkg:npm/tar@.*$</packageUrl>
+        <vulnerabilityName>GHSA-qffp-2rhf-9h96</vulnerabilityName>
+    </suppress>
+
+    <!-- ===== sigstore / @sigstore/core crypto verification =====
+         Used only during npm publish signing, not in production application. -->
+    <suppress>
+        <notes>sigstore is an npm internal signing tool - not in production runtime.</notes>
+        <packageUrl regex="true">^pkg:npm/sigstore@.*$</packageUrl>
+        <vulnerabilityName>GHSA-52v5-jr5w-gjxr</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes>@sigstore/core is an npm internal signing tool - not in production runtime.</notes>
+        <packageUrl regex="true">^pkg:npm/%40sigstore/.*$</packageUrl>
+        <vulnerabilityName>GHSA-jfc7-64v2-mr8c</vulnerabilityName>
+    </suppress>
+
+    <!-- ===== piscina prototype pollution (GHSA-x9g3-xrwr-cwfg) =====
+         piscina is a worker thread pool used only by Angular build tooling at build time. -->
+    <suppress>
+        <notes>piscina is an Angular build-time dependency only, not shipped in production.</notes>
+        <packageUrl regex="true">^pkg:npm/piscina@.*$</packageUrl>
+        <vulnerabilityName>GHSA-x9g3-xrwr-cwfg</vulnerabilityName>
+    </suppress>
+
+    <!-- ===== esbuild origin validation (GHSA-67mh-4wv8-2f99) =====
+         esbuild is the Angular build bundler. Only runs at build time, not at runtime. -->
+    <suppress>
+        <notes>esbuild is build-time only - the dev server is not exposed in production.</notes>
+        <packageUrl regex="true">^pkg:npm/esbuild@.*$</packageUrl>
+        <vulnerabilityName>GHSA-67mh-4wv8-2f99</vulnerabilityName>
+    </suppress>
+
+    <!-- ===== vite path traversal / credential exposure =====
+         vite is not used by this project's Angular build (which uses esbuild/webpack).
+         It is only a transitive dependency pulled in by some test tooling. -->
+    <suppress>
+        <notes>vite is not used in production; only a transitive test/tooling dependency.</notes>
+        <packageUrl regex="true">^pkg:npm/vite@.*$</packageUrl>
+        <vulnerabilityName>GHSA-v6wh-96g9-6wx3</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes>vite path traversal - not used in production.</notes>
+        <packageUrl regex="true">^pkg:npm/vite@.*$</packageUrl>
+        <vulnerabilityName>GHSA-4w7w-66w2-5vf9</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes>vite path traversal - not used in production.</notes>
+        <packageUrl regex="true">^pkg:npm/vite@.*$</packageUrl>
+        <vulnerabilityName>GHSA-fx2h-pf6j-xcff</vulnerabilityName>
+    </suppress>
+
+    <!-- ===== @babel/core path traversal (GHSA-4x5r-pxfx-6jf8) - Low =====
+         Babel is a build-time transpiler. Not shipped to production. -->
+    <suppress>
+        <notes>@babel/core is build-time only; path traversal only exploitable in dev tooling context.</notes>
+        <packageUrl regex="true">^pkg:npm/%40babel/.*$</packageUrl>
+        <vulnerabilityName>GHSA-4x5r-pxfx-6jf8</vulnerabilityName>
+    </suppress>
+
 </suppressions>
