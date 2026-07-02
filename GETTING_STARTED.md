@@ -96,9 +96,10 @@ Naar-Noor/
 ├── README.md                      ← Start here
 ├── GETTING_STARTED.md             ← This file
 ├── EXECUTIVE_SUMMARY.txt          ← High-level overview
-├── PRODUCTION_RUNBOOK.md          ← Deploy to production
-├── DEPLOY.md                      ← Deployment steps
-├── PROJECT_SUMMARY.md             ← Complete architecture
+├── docs/                          ← Detailed documentation folder
+│   ├── PRODUCTION_RUNBOOK.md      ← Deploy & operate in production
+│   ├── DEPLOYMENT.md              ← Detailed deployment steps
+│   └── archive/                   ← Archive for historical summaries
 │
 ├── docker-compose.yml             ← Production setup
 ├── docker-compose.dev.yml         ← Development setup
@@ -362,13 +363,11 @@ docker-compose exec naar-noor-prod-api dotnet diagnostic
 
 ## Support Resources
 
-| Need | Resource |
-|------|----------|
-| **Architecture** | `PROJECT_SUMMARY.md` |
-| **Deployment** | `PRODUCTION_RUNBOOK.md` |
+| **Architecture** | `docs/ARCHITECTURE.md` |
+| **Deployment** | `docs/PRODUCTION_RUNBOOK.md` & `docs/DEPLOYMENT.md` |
 | **API Documentation** | Swagger UI at `/swagger` |
 | **Security** | `docs/SECURITY.md` |
-| **Troubleshooting** | `PRODUCTION_RUNBOOK.md` (Troubleshooting section) |
+| **Troubleshooting** | `docs/TROUBLESHOOTING.md` |
 
 ---
 
@@ -387,7 +386,7 @@ docker-compose exec naar-noor-prod-api dotnet diagnostic
 ## Questions?
 
 1. Check `EXECUTIVE_SUMMARY.txt` for quick overview
-2. Read `PROJECT_SUMMARY.md` for detailed architecture
+2. Read `docs/ARCHITECTURE.md` for detailed architecture
 3. Review relevant documentation in `docs/`
 4. Check logs: `docker logs <service-name>`
 

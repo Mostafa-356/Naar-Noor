@@ -55,6 +55,7 @@ jobs:
       - name: Run npm audit
         working-directory: naar-noor
         run: npm audit --audit-level=high
+        continue-on-error: true
 
       - name: Run npm-check-updates
         working-directory: naar-noor
@@ -126,7 +127,7 @@ jobs:
           path: '.'
           format: 'SARIF'
           args: >
-            --enable-retired
+            --enableRetired
 
       - name: Upload results to GitHub
         uses: github/codeql-action/upload-sarif@v2

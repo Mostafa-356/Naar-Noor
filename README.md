@@ -25,7 +25,7 @@
 
 This application is fully built, tested, and secured. It's ready to go live today.
 
-**To deploy:** Follow [PRODUCTION_RUNBOOK.md](PRODUCTION_RUNBOOK.md)  
+**To deploy:** Follow [docs/PRODUCTION_RUNBOOK.md](docs/PRODUCTION_RUNBOOK.md)  
 **New to this?** Start with [GETTING_STARTED.md](GETTING_STARTED.md)
 
 [![Deployment](https://img.shields.io/badge/deployment-Docker%20%2B%20Kubernetes-success)](docker-compose.yml)
@@ -84,7 +84,7 @@ cd Naar-Noor
 
 Then follow the detailed setup guide:
 
-- 📘 [Detailed installation and setup](docs/GETTING_STARTED.md)
+- 📘 [Detailed installation and setup](GETTING_STARTED.md)
 - 📂 [Project structure](docs/PROJECT_STRUCTURE.md)
 - 🏗️ [Architecture](docs/ARCHITECTURE.md)
 
@@ -99,7 +99,7 @@ Then follow the detailed setup guide:
 | Document | Purpose |
 |----------|---------|
 | [docs/README.md](docs/README.md) | Documentation index |
-| [docs/GETTING_STARTED.md](docs/GETTING_STARTED.md) | Setup and development guide |
+| [GETTING_STARTED.md](GETTING_STARTED.md) | Setup and development guide |
 | [docs/PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md) | Codebase layout |
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Design and patterns |
 | [docs/FRONTEND.md](docs/FRONTEND.md) | Frontend development |
@@ -118,7 +118,7 @@ Then follow the detailed setup guide:
 
 ## 📦 Running locally
 
-For full setup details, use [docs/GETTING_STARTED.md](docs/GETTING_STARTED.md).
+For full setup details, use [GETTING_STARTED.md](GETTING_STARTED.md).
 
 ### Backend
 
@@ -210,8 +210,8 @@ See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for full deployment instructions.
 Before contributing, please review:
 
 - [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)
-- [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
-- [SECURITY.md](SECURITY.md)
+- [docs/CODE_OF_CONDUCT.md](docs/CODE_OF_CONDUCT.md)
+- [docs/SECURITY.md](docs/SECURITY.md)
 
 ## 📄 License
 
