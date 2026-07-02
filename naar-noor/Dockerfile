@@ -16,8 +16,8 @@ RUN npm ci --include=dev
 # Copy source code
 COPY . .
 
-# Build production bundle with Angular CLI
-RUN npm run build
+# Build production bundle — use node directly to bypass .bin/ symlink issues on Alpine
+RUN node node_modules/@angular/cli/bin/ng.js build --configuration production
 
 # Stage 2: Serve with Nginx
 FROM nginx:alpine
