@@ -70,7 +70,7 @@ jobs:
         run: |
           python scripts/validate-coverage.py \
             --backend \
-            --backend-dir "api-server/tests" \
+            --backend-dir "./backend-test-results" \
             --output backend-report.json 2>&1 || true
           
           if [ -f backend-report.json ]; then
@@ -83,12 +83,13 @@ jobs:
       - name: Validate frontend coverage thresholds
         id: frontend-coverage
         run: |
-          cd naar-noor
-          npm run coverage:check 2>&1 || RESULT=$?
-          cd ..
+          python scripts/validate-coverage.py \
+            --frontend \
+            --frontend-dir "./frontend-test-results" \
+            --output frontend-report.json 2>&1 || true
           
-          if [ "$RESULT" -eq 0 ]; then
-            echo "{\"passed\": true}" > frontend-report.json
+          if [ -f frontend-report.json ]; then
+            cat frontend-report.json
           else
             echo "{\"passed\": false}" > frontend-report.json
           fi

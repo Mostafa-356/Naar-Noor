@@ -154,56 +154,58 @@ class CoverageValidator:
             print(f"Backend coverage directory not found: {report_dir}")
             return False
         
-        # Find coverage.cobertura.xml files for each layer
+        # Find all coverage.cobertura.xml files recursively
+        xml_files = list(report_path.glob('**/coverage.cobertura.xml'))
+        
+        if not xml_files:
+            print(f"WARN No coverage reports found at {report_dir}")
+            return False
+            
         test_projects = {
-            'NaarNoor.Domain.Tests': 'NaarNoor.Domain',
-            'NaarNoor.Application.Tests': 'NaarNoor.Application',
-            'NaarNoor.Infrastructure.Tests': 'NaarNoor.Infrastructure',
-            'NaarNoor.API.Tests': 'NaarNoor.API',
+            'NaarNoor.Domain': 'NaarNoor.Domain',
+            'NaarNoor.Application': 'NaarNoor.Application',
+            'NaarNoor.Infrastructure': 'NaarNoor.Infrastructure',
+            'NaarNoor.API': 'NaarNoor.API',
         }
         
         overall_passed = True
+        found_packages = set()
         
-        for test_dir, package_name in test_projects.items():
-            test_path = report_path / test_dir
-            xml_files = list(test_path.glob('**/coverage.cobertura.xml'))
-            
-            if not xml_files:
-                print(f"WARN [{package_name}] No coverage report found at {test_path}")
+        for xml_file in xml_files:
+            try:
+                tree = ET.parse(xml_file)
+                root = tree.getroot()
+                packages = root.findall('.//packages/package')
+                for package in packages:
+                    pkg_name = package.get('name')
+                    if pkg_name in test_projects:
+                        coverage = self.parse_package_coverage(str(xml_file), pkg_name)
+                        if coverage is not None:
+                            threshold = self.BACKEND_THRESHOLDS.get(pkg_name, 80.0)
+                            passed = coverage >= threshold
+                            if not passed:
+                                overall_passed = False
+                            
+                            self.backend_results[pkg_name] = {
+                                'coverage': round(coverage, 2),
+                                'threshold': threshold,
+                                'passed': passed,
+                                'coverage_file': str(xml_file),
+                            }
+                            # Get uncovered classes
+                            uncovered = self.get_uncovered_classes(str(xml_file), pkg_name, 50.0)
+                            if uncovered:
+                                self.backend_results[pkg_name]['uncovered_classes'] = uncovered[:5]
+                            found_packages.add(pkg_name)
+            except Exception as e:
+                print(f"Error parsing XML file {xml_file}: {e}", file=sys.stderr)
+                
+        # Check if all required layers were found
+        for required_pkg in test_projects.keys():
+            if required_pkg not in found_packages:
+                print(f"WARN [{required_pkg}] No coverage data found in reports")
                 overall_passed = False
-                continue
-            
-            # Use the most recent coverage file
-            xml_file = max(xml_files, key=lambda p: p.stat().st_mtime)
-            
-            # Extract coverage for this package
-            coverage = self.parse_package_coverage(str(xml_file), package_name)
-            
-            if coverage is None:
-                print(f"WARN [{package_name}] Could not parse coverage from {xml_file}")
-                overall_passed = False
-                continue
-            
-            # Get the threshold for this package
-            threshold = self.BACKEND_THRESHOLDS.get(package_name, 80.0)
-            passed = coverage >= threshold
-            
-            if not passed:
-                overall_passed = False
-            
-            # Store result
-            self.backend_results[package_name] = {
-                'coverage': round(coverage, 2),
-                'threshold': threshold,
-                'passed': passed,
-                'coverage_file': str(xml_file),
-            }
-            
-            # Get uncovered classes for gap report
-            uncovered = self.get_uncovered_classes(str(xml_file), package_name, 50.0)
-            if uncovered:
-                self.backend_results[package_name]['uncovered_classes'] = uncovered[:5]
-        
+                
         self.backend_passed = overall_passed
         return overall_passed
     
