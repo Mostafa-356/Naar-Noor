@@ -23,7 +23,7 @@ export const appConfig: ApplicationConfig = {
       }),
       withPreloading(PreloadAllModules)
     ),
-    provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
+    provideHttpClient(withInterceptors([authInterceptor])),
     provideServiceWorker('ngsw-worker.js', {
       enabled: !isDevMode(),
       registrationStrategy: 'registerWhenStable:30000'

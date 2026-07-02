@@ -29,7 +29,7 @@
  * DB availability is tracked via the module-level `dbAvailable` variable instead.
  */
 
-const API = 'http://localhost:8080';
+const API = 'http://localhost:5000';
 
 /**
  * Module-level flag: true when DATABASE_URL is configured and seeding succeeded.

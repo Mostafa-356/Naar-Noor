@@ -23,7 +23,6 @@ describe('Reservation Workflow E2E Tests', () => {
   describe('Unauthenticated access', () => {
     beforeEach(() => {
       cy.visit('/reservations');
-      cy.wait('@getChefs');
     });
 
     it('should display the reservations page', () => {

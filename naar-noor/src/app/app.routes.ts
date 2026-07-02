@@ -32,8 +32,7 @@ export const routes: Routes = [
   },
   {
     path: 'checkout',
-    loadComponent: () => import('./pages/checkout/checkout.component').then(m => m.CheckoutComponent),
-    canActivate: [authGuard]
+    loadComponent: () => import('./pages/checkout/checkout.component').then(m => m.CheckoutComponent)
   },
   {
     path: 'order-confirmed',
@@ -55,6 +54,10 @@ export const routes: Routes = [
   {
     path: 'terms',
     loadComponent: () => import('./pages/terms/terms.component').then(m => m.TermsPageComponent)
+  },
+  {
+    path: 'reviews',
+    loadComponent: () => import('./pages/reviews/reviews.component').then(m => m.ReviewsPageComponent)
   },
   {
     path: '**',

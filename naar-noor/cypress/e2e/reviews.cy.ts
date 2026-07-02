@@ -61,7 +61,7 @@ describe('Reviews E2E Tests', () => {
 
   describe('Submitting a Review', () => {
     beforeEach(() => {
-      cy.intercept('POST', 'http://localhost:8080/api/reviews*', {
+      cy.intercept('POST', '/api/reviews*', {
         statusCode: 201,
         body: {
           id: 'review-new',

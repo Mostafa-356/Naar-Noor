@@ -156,7 +156,7 @@ import { SeoService } from '../../services/seo.service';
               >
                 <div>
                   <div class="flex justify-between items-start gap-4 mb-2">
-                    <h3 class="font-['Forum'] text-xl text-white group-hover:text-[#C65A1E] transition-colors">
+                    <h3 data-cy="item-name" class="font-['Forum'] text-xl text-white group-hover:text-[#C65A1E] transition-colors">
                       {{ item.name }}
                     </h3>
                     <span class="font-['Forum'] text-lg text-white font-medium shrink-0">£{{ item.price.toFixed(2) }}</span>
@@ -168,6 +168,7 @@ import { SeoService } from '../../services/seo.service';
 
                 <div class="flex items-center justify-between mt-auto pt-4 border-t border-white/5">
                   <div class="flex gap-2">
+                    <span data-cy="item-category" class="text-[9px] tracking-wider uppercase bg-white/5 text-neutral-400 px-2 py-0.5 rounded border border-white/10">{{ item.category }}</span>
                     <span *ngIf="item.isVegan" class="text-[9px] tracking-wider uppercase bg-[#C65A1E]/10 text-[#C65A1E] px-2 py-0.5 rounded border border-[#C65A1E]/20">Vegan</span>
                     <span *ngIf="item.isVegetarian && !item.isVegan" class="text-[9px] tracking-wider uppercase bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/20">Vegetarian</span>
                     <span *ngIf="item.isGlutenFree" class="text-[9px] tracking-wider uppercase bg-blue-500/10 text-blue-400 px-2 py-0.5 rounded border border-blue-500/20">Gluten-Free</span>
