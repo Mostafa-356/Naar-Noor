@@ -10,8 +10,8 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies using npm ci (clean install)
-RUN npm ci
+# Install ALL dependencies (including devDeps for Angular CLI / build tools)
+RUN npm ci --include=dev
 
 # Copy source code
 COPY . .

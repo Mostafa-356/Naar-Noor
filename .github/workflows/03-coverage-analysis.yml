@@ -47,8 +47,10 @@ jobs:
           cache-dependency-path: 'naar-noor/package-lock.json'
 
       - name: Install frontend dependencies
-        run: npm ci
+        run: npm ci --include=dev
         working-directory: naar-noor
+        env:
+          NODE_ENV: development
 
       - name: Setup Python
         uses: actions/setup-python@v5

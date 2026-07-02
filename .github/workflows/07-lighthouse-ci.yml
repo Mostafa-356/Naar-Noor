@@ -27,7 +27,9 @@ jobs:
 
       - name: Install dependencies
         working-directory: naar-noor
-        run: npm ci
+        run: npm ci --include=dev
+        env:
+          NODE_ENV: development
 
       - name: Build production bundle
         working-directory: naar-noor
