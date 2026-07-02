@@ -106,7 +106,7 @@ describe('Authentication E2E Tests', () => {
       LoginPage.visit();
       LoginPage.login(VALID_EMAIL, VALID_PASSWORD);
       cy.wait('@login');
-      cy.intercept('GET', '/api/menu*').as('getMenuNav');
+      cy.intercept('GET', 'http://localhost:8080/api/menu*').as('getMenuNav');
       cy.visit('/menu');
       LoginPage.verifyLoggedIn();
     });

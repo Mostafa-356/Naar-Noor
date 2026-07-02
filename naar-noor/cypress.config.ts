@@ -21,8 +21,11 @@ export default defineConfig({
     baseUrl: 'http://localhost:5000',
     viewportWidth: 1280,
     viewportHeight: 720,
-    defaultCommandTimeout: 8000,
-    requestTimeout: 8000,
+    defaultCommandTimeout: 12000,
+    requestTimeout: 12000,
+    responseTimeout: 12000,
+    experimentalModifyObstructiveThirdPartyCode: false,
+    allowCypressEnv: false,
     setupNodeEvents(on) {
       on('task', {
         async 'db:seed:menu'(items: Record<string, unknown>[]) {

@@ -81,11 +81,7 @@ jobs:
         env:
           NODE_ENV: development
 
-      - name: Build frontend
-        run: npm run build
-        working-directory: naar-noor
-
-      - name: Start frontend server
+      - name: Start frontend dev server
         run: npm run dev &
         working-directory: naar-noor
 
@@ -94,8 +90,10 @@ jobs:
         working-directory: naar-noor
 
       - name: Run Cypress E2E tests
-        run: npx cypress run --headless --browser chrome --config baseUrl=http://localhost:5000
+        run: npm run e2e:ci
         working-directory: naar-noor
+        env:
+          CYPRESS_BASE_URL: http://localhost:5000
 
       - name: Upload Cypress screenshots (on failure)
         if: failure()
