@@ -1,0 +1,8 @@
+{
+  "version": 2,
+  "cleanUrls": true,
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
+  "framework": "angular",
+  "outputDirectory": "dist/naar-noor/browser"
+}
