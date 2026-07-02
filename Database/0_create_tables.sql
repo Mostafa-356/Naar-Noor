@@ -131,5 +131,5 @@ AND table_name IN ('Orders', 'Reservations', 'MenuItems', 'Chefs', 'Reviews', 'C
 -- NEXT STEP
 -- ============================================================================
 -- After this script completes successfully (7 tables created):
--- 1. Run: sql/2_1_rls_implementation.sql (RLS policies)
--- 2. Run: sql/2_5_storage_policies.sql (Storage policies)
+-- 1. Run: Database/2_1_rls_implementation.sql (RLS policies)
+-- 2. Run: Database/2_5_storage_policies.sql (Storage policies)

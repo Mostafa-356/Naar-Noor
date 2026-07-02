@@ -8,10 +8,10 @@
 -- ============================================================================
 -- Before executing this script, ensure all database tables are created by running:
 -- 
--- 1. Execute: sql/0_create_tables.sql (in Supabase SQL Editor)
+-- 1. Execute: Database/0_create_tables.sql (in Supabase SQL Editor)
 --    This creates all 7 tables
 --
--- 2. Then execute this script: sql/2_1_rls_implementation.sql
+-- 2. Then execute this script: Database/2_1_rls_implementation.sql
 --
 -- ============================================================================
 -- STEP 1: Enable RLS on All Tables
